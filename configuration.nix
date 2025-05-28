@@ -351,6 +351,9 @@ flatpak
 sshpass
 #cloudflared
 ntfs3g
+usbutils
+gparted
+exfatprogs
 ####
 #### programing
   #python3
@@ -430,6 +433,8 @@ services.cloudflare-warp.enable = true;
 # power profiles
 services.power-profiles-daemon.enable = true;
 
+
+
 #  systemd.services.warp-plus = {
 #    description = "Warp Plus Service";
 #    after = [ "network.target" ];
@@ -455,16 +460,16 @@ services.power-profiles-daemon.enable = true;
 
 ###
 
-###### auto mount:
+###### auto mount: bug: because after use it sleep had problem
 
-  fileSystems = {
-    "/run/media/amir/Games" = {
-      device = "/dev/sda3";
-      fsType = "ntfs";
-      options = [ "defaults" "noauto" "x-systemd.automount" ];
-      mountPoint = "/run/media/amir/Games";
-    };
-  };
+#  fileSystems = {
+ #   "/run/media/amir/Games" = {
+ #     device = "/dev/sda3";
+ #     fsType = "ntfs";
+ #     options = [ "defaults" "noauto" "x-systemd.automount" ];
+ #    mountPoint = "/run/media/amir/Games";
+ #   };
+ # };
 
 services.devmon.enable = true;
 services.gvfs.enable = true; 
