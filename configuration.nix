@@ -1,4 +1,4 @@
-# welcome to my config, i am amirshi.
+# welcome to my config, i am amir.
 
 { config, pkgs, lib, 
 
@@ -537,7 +537,7 @@ fonts.packages = with pkgs; [
 
  boot.initrd.kernelModules = [ "nvidia" ];
  services.xserver.videoDrivers = ["nvidia"];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
   hardware.nvidia = {
     modesetting.enable = true;
@@ -946,8 +946,8 @@ environment.sessionVariables = {
   home-manager.users.amir = {
    programs.git = {
     enable = true;
-    userName  = "Nako Nishke";
-    userEmail = "amir47@protonmail.com";
+    userName  = "Amir-Hossein-Azimi";
+    userEmail = "tweaterinestageram20@gmail.com";
    };
 
 # gnome
