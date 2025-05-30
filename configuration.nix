@@ -434,7 +434,6 @@ services.cloudflare-warp.enable = true;
 services.power-profiles-daemon.enable = true;
 
 
-
 #  systemd.services.warp-plus = {
 #    description = "Warp Plus Service";
 #    after = [ "network.target" ];
@@ -860,6 +859,7 @@ environment.sessionVariables = {
   arch-rm = "distrobox-stop --root arch && distrobox-rm --root arch";
   arch = "distrobox enter --root arch";
   phone = "scrcpy --max-fps=60 -K --render-driver=opengl --turn-screen-off --disable-screensaver --power-off-on-close";
+  snekoray = "sudo nekoray";
 };
 
 #####################################
@@ -970,6 +970,7 @@ cloudflare-warp-toggle
 dconf = {
   enable = true;
   settings = {
+
     #AMHOAZ=keyboard
     "org/gnome/desktop/input-sources" = {"xkb-options" = ["grp:alt_shift_toggle"];};
 
@@ -1009,10 +1010,10 @@ dconf = {
       animate-appicon-hover = true;
     };
 
-
+# This specifically targets the gtk4-ding extension , how to find : dconf watch /
     "org/gnome/shell/extensions/gtk4-ding" = {
       keep-arranged = true;
-      sort-special-folders = true;
+      sort-special-folders = false;
       keep-stacked = true;
     };
 
@@ -1038,11 +1039,14 @@ dconf = {
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
       custom-keybindings = [
+
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+
       ];
     };
+
 
     # --- GNOME Desktop WM Keybindings ---
     "org/gnome/desktop/wm/keybindings" = {
@@ -1731,6 +1735,7 @@ programs.mpv.enable = true;
 programs.mpv.scripts = with pkgs.mpvScripts; [
 uosc
 thumbfast
+#for not sleep
 inhibit-gnome
 
 ];
@@ -1811,6 +1816,8 @@ OPENAI_API_KEY=AIzaSyDdB1cLD2SSusluKuYq5MB91naJsC3ACU0
       #"application/vnd.comicbook+zip" = "okularApplication_comicbook.desktop";
       #"application/pdf" = "okularApplication_comicbook.desktop";
     }; };
+
+
 
 ## vesktop config
 programs.vesktop = {
