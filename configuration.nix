@@ -229,6 +229,8 @@ inputs, ... }:
 # official repo search:
 # https://search.nixos.org/ 
 
+
+
 neohtop
 
 wget # i search for it
@@ -323,6 +325,8 @@ p7zip
 ########
 #### vpn stuff
    nekoray
+   openvpn
+   networkmanager-openvpn
   #sing-box
   #hiddify-app
   #libreswan
@@ -561,6 +565,9 @@ fonts.packages = with pkgs; [
 #####################################################
 # networking
 
+
+  networking.networkmanager.enable = true;
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.wifi.macAddress = "random";
@@ -571,8 +578,8 @@ fonts.packages = with pkgs; [
   #networking.proxy.default = "127.0.0.1:2080";
   #networking.proxy.noProxy = "localhost, 127.0.0.0/8, ::1";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+
+
   networking.nameservers = [
   "1.1.1.1"
 #  "1.0.0.1"
