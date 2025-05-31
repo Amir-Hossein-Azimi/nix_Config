@@ -15,25 +15,33 @@
       inputs.nixpkgs.follows = "nixpkgs"; # Home Manager follows the Nixpkgs input
     };
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     # Define the Nixpkgs Wayland repository
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
     
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-
+    stylix.inputs.home-manager.follows = "home-manager";
     # Define the Nix Flatpak repository
-    #nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     
     # Define the NUR (Nix User Repository)
-#    nur = {
-#	url = "github:nix-community/NUR";
-#      	inputs.nixpkgs.follows = "nixpkgs"; # Home Manager follows the Nixpkgs input
-#    };  
+   nur = {
+	url = "github:nix-community/NUR";
+      	inputs.nixpkgs.follows = "nixpkgs"; # Home Manager follows the Nixpkgs input
+    };
   
     # Define the Chaotic repository
     #chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
+# to fix command not found
+programsdb.url = "github:wamserma/flake-programs-sqlite";
+programsdb.inputs.nixpkgs.follows = "nixpkgs";
 
 ############################
 # non-flake example
@@ -85,10 +93,11 @@
     nixpkgs, # This is your main unstable nixpkgs
     #nixpkgs-stable, # This is your stable nixpkgs input
     stylix, 
-    #nix-flatpak, 
+    nix-flatpak,
     home-manager, 
+    plasma-manager,
     nixpkgs-wayland,
-    #nur,
+    nur,
     #chaotic,
     ... 
   }@inputs: 
@@ -118,6 +127,8 @@
 #           nur.modules.nixos.default # Updated from nur.nixosModules.nur, Include NUR modules
            home-manager.nixosModules.home-manager # Include Home Manager modules
 	   stylix.nixosModules.stylix
+	   nur.modules.nixos.default
+	   nix-flatpak.nixosModules.nix-flatpak # Include Nix Flatpak modules
 #          nix-flatpak.nixosModules.nix-flatpak # Include Nix Flatpak modules
 #          chaotic.nixosModules.default # Include Chaotic modules
           ./configuration.nix # Include the main configuration file

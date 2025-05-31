@@ -238,6 +238,9 @@ wget # i search for it
 # gnome
 dconf-editor
 desktop-file-utils
+#kde
+kdePackages.okular
+kdePackages.konsole
 
 # sddm
 sddm-sugar-dark #sddm theme
@@ -714,43 +717,34 @@ programs.command-not-found.enable = false;
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   programs.xwayland.enable = true;
- 
-  # gnome
-  services.xserver.desktopManager.gnome.enable = true;
+
+  #kde
+  services.desktopManager.plasma6.enable = true;
+ # services.xserver.desktopManager.plasma5.enable = true;
+
+
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+   plasma-browser-integration
+   konsole
+   elisa
+   dolphin
+   khelpcenter
+   kinfocenter
+   discover
+   kwalletmanager
+];
+
+
+
   # login manager
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
-  services.displayManager.sddm.theme = "sugar-dark";
+  #uncomment for kde 6
+  services.displayManager.sddm.extraPackages = [ pkgs.sddm-astronaut ];
+  services.displayManager.sddm.theme = "${pkgs.sddm-astronaut}/share/sddm/themes/sddm-astronaut-theme";
 
-  environment.gnome.excludePackages = with pkgs; [
-    orca
-    evince
-    geary
-    xterm
-    decibels
-    gnome-disk-utility
-    gnome-backgrounds
-    gnome-tour # GNOME Shell detects the .desktop file on first log-in.
-    gnome-user-docs
-    baobab
-    epiphany
-    gnome-console
-    gnome-text-editor
-    gnome-calendar
-    gnome-characters
-    gnome-contacts
-    gnome-font-viewer
-    gnome-logs
-    gnome-maps
-    gnome-music
-    gnome-weather
-    gnome-connections
-    simple-scan
-    totem
-    yelp
-    #nautilus
-    gnome-software
-  ];
+  programs.dconf.enable = true;
 
   # Enable automatic login for the user.
   #services.displayManager.autoLogin.enable = false;
@@ -766,9 +760,7 @@ programs.command-not-found.enable = false;
   # Optional but good practice: Ensure Polkit service is enabled
   # security.polkit.enable = true;
 
-  # gnome configuration
-  programs.dconf.enable = true;
-  services.udev.packages = [ pkgs.gnome-settings-daemon ];
+
 
 
  # fish shell
@@ -948,7 +940,8 @@ environment.sessionVariables = {
 # https://nix-community.github.io/home-manager/options.xhtml
 # https://home-manager-options.extranix.com/
   home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "old";
+  home-manager.backupFileExtension = "bak";
+  home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
   
   home-manager.users.amir = {
    programs.git = {
@@ -957,30 +950,371 @@ environment.sessionVariables = {
     userEmail = "tweaterinestageram20@gmail.com";
    };
 
-# gnome
-  home.packages = with pkgs.gnomeExtensions; [
-dash-to-panel
-clipboard-indicator
-appindicator
-caffeine
-gsconnect
-arcmenu
-removable-drive-menu
-#just-perfection
-#forge
-gtk4-desktop-icons-ng-ding
-cloudflare-warp-toggle
-  ];
+ #kde
+# if you want to change stuff, disable plasma manager, do your own settings, then export using:
+# nix run github:nix-community/plasma-manager
+# and add your own
+  programs.plasma = {
+    enable = true;
+    shortcuts = {
+      "ActivityManager"."switch-to-activity-e2cb32e1-a872-4387-88b3-85dc4ef2f19a" = [ ];
+      "KDE Keyboard Layout Switcher"."Switch keyboard layout to English (US)" = [ ];
+      "KDE Keyboard Layout Switcher"."Switch keyboard layout to Persian (with Persian keypad)" = [ ];
+      "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
+      "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "none,Meta+Alt+K,Switch to Next Keyboard Layout";
+      "kaccess"."Toggle Screen Reader On and Off" = "Meta+Alt+S";
+      "kcm_touchpad"."Disable Touchpad" = "Touchpad Off";
+      "kcm_touchpad"."Enable Touchpad" = "Touchpad On";
+      "kcm_touchpad"."Toggle Touchpad" = ["Touchpad Toggle" "Meta+Ctrl+Touchpad Toggle" "Meta+Ctrl+Zenkaku Hankaku,Touchpad Toggle" "Touchpad Toggle" "Meta+Ctrl+Touchpad Toggle" "Meta+Ctrl+Zenkaku Hankaku"];
+      "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
+      "kmix"."decrease_volume" = "Volume Down";
+      "kmix"."decrease_volume_small" = "Shift+Volume Down";
+      "kmix"."increase_microphone_volume" = "Microphone Volume Up";
+      "kmix"."increase_volume" = "Volume Up";
+      "kmix"."increase_volume_small" = "Shift+Volume Up";
+      "kmix"."mic_mute" = ["Microphone Mute" "Meta+Volume Mute,Microphone Mute" "Meta+Volume Mute,Mute Microphone"];
+      "kmix"."mute" = "Volume Mute";
+      "ksmserver"."Halt Without Confirmation" = "none,,Shut Down Without Confirmation";
+      "ksmserver"."Lock Session" = ["Meta+L" "Screensaver,Meta+L" "Screensaver,Lock Session"];
+      "ksmserver"."Log Out" = "Ctrl+Alt+Del";
+      "ksmserver"."Log Out Without Confirmation" = "none,,Log Out Without Confirmation";
+      "ksmserver"."LogOut" = "none,,Log Out";
+      "ksmserver"."Reboot" = "none,,Reboot";
+      "ksmserver"."Reboot Without Confirmation" = "none,,Reboot Without Confirmation";
+      "ksmserver"."Shut Down" = "none,,Shut Down";
+      "kwin"."Activate Window Demanding Attention" = "Meta+Ctrl+A";
+      "kwin"."Cycle Overview" = [ ];
+      "kwin"."Cycle Overview Opposite" = [ ];
+      "kwin"."Decrease Opacity" = "none,,Decrease Opacity of Active Window by 5%";
+      "kwin"."Edit Tiles" = "none,,Toggle Tiles Editor";
+      "kwin"."Expose" = "Ctrl+F9";
+      "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C),Ctrl+F10" "Launch (C),Toggle Present Windows (All desktops)"];
+      "kwin"."ExposeClass" = "Ctrl+F7";
+      "kwin"."ExposeClassCurrentDesktop" = [ ];
+      "kwin"."Grid View" = "Meta+G";
+      "kwin"."Increase Opacity" = "none,,Increase Opacity of Active Window by 5%";
+      "kwin"."Kill Window" = "Meta+Ctrl+Esc";
+      "kwin"."Move Tablet to Next Output" = [ ];
+      "kwin"."MoveMouseToCenter" = "Meta+F6";
+      "kwin"."MoveMouseToFocus" = "Meta+F5";
+      "kwin"."MoveZoomDown" = [ ];
+      "kwin"."MoveZoomLeft" = [ ];
+      "kwin"."MoveZoomRight" = [ ];
+      "kwin"."MoveZoomUp" = [ ];
+      "kwin"."Overview" = "Meta+W";
+      "kwin"."Setup Window Shortcut" = "none,,Setup Window Shortcut";
+      "kwin"."Show Desktop" = "Meta+D";
+      "kwin"."Switch One Desktop Down" = "Meta+Ctrl+Down";
+      "kwin"."Switch One Desktop Up" = "Meta+Ctrl+Up";
+      "kwin"."Switch One Desktop to the Left" = "Meta+Ctrl+Left";
+      "kwin"."Switch One Desktop to the Right" = "Meta+Ctrl+Right";
+      "kwin"."Switch Window Down" = "Meta+Alt+Down";
+      "kwin"."Switch Window Left" = "Meta+Alt+Left";
+      "kwin"."Switch Window Right" = "Meta+Alt+Right";
+      "kwin"."Switch Window Up" = "Meta+Alt+Up";
+      "kwin"."Switch to Desktop 1" = ["Meta+1" "Ctrl+F1,Ctrl+F1,Switch to Desktop 1"];
+      "kwin"."Switch to Desktop 10" = "none,,Switch to Desktop 10";
+      "kwin"."Switch to Desktop 11" = "none,,Switch to Desktop 11";
+      "kwin"."Switch to Desktop 12" = "none,,Switch to Desktop 12";
+      "kwin"."Switch to Desktop 13" = "none,,Switch to Desktop 13";
+      "kwin"."Switch to Desktop 14" = "none,,Switch to Desktop 14";
+      "kwin"."Switch to Desktop 15" = "none,,Switch to Desktop 15";
+      "kwin"."Switch to Desktop 16" = "none,,Switch to Desktop 16";
+      "kwin"."Switch to Desktop 17" = "none,,Switch to Desktop 17";
+      "kwin"."Switch to Desktop 18" = "none,,Switch to Desktop 18";
+      "kwin"."Switch to Desktop 19" = "none,,Switch to Desktop 19";
+      "kwin"."Switch to Desktop 2" = ["Ctrl+F2" "Meta+2,Ctrl+F2,Switch to Desktop 2"];
+      "kwin"."Switch to Desktop 20" = "none,,Switch to Desktop 20";
+      "kwin"."Switch to Desktop 3" = ["Ctrl+F3" "Meta+3,Ctrl+F3,Switch to Desktop 3"];
+      "kwin"."Switch to Desktop 4" = ["Meta+4" "Ctrl+F4,Ctrl+F4,Switch to Desktop 4"];
+      "kwin"."Switch to Desktop 5" = "Meta+5,,Switch to Desktop 5";
+      "kwin"."Switch to Desktop 6" = "Meta+6,,Switch to Desktop 6";
+      "kwin"."Switch to Desktop 7" = "Meta+7,,Switch to Desktop 7";
+      "kwin"."Switch to Desktop 8" = "Meta+8,,Switch to Desktop 8";
+      "kwin"."Switch to Desktop 9" = "Meta+9,,Switch to Desktop 9";
+      "kwin"."Switch to Next Desktop" = "none,,Switch to Next Desktop";
+      "kwin"."Switch to Next Screen" = "none,,Switch to Next Screen";
+      "kwin"."Switch to Previous Desktop" = "none,,Switch to Previous Desktop";
+      "kwin"."Switch to Previous Screen" = "none,,Switch to Previous Screen";
+      "kwin"."Switch to Screen 0" = "none,,Switch to Screen 0";
+      "kwin"."Switch to Screen 1" = "none,,Switch to Screen 1";
+      "kwin"."Switch to Screen 2" = "none,,Switch to Screen 2";
+      "kwin"."Switch to Screen 3" = "none,,Switch to Screen 3";
+      "kwin"."Switch to Screen 4" = "none,,Switch to Screen 4";
+      "kwin"."Switch to Screen 5" = "none,,Switch to Screen 5";
+      "kwin"."Switch to Screen 6" = "none,,Switch to Screen 6";
+      "kwin"."Switch to Screen 7" = "none,,Switch to Screen 7";
+      "kwin"."Switch to Screen Above" = "none,,Switch to Screen Above";
+      "kwin"."Switch to Screen Below" = "none,,Switch to Screen Below";
+      "kwin"."Switch to Screen to the Left" = "none,,Switch to Screen to the Left";
+      "kwin"."Switch to Screen to the Right" = "none,,Switch to Screen to the Right";
+      "kwin"."Toggle Night Color" = [ ];
+      "kwin"."Toggle Window Raise/Lower" = "none,,Toggle Window Raise/Lower";
+      "kwin"."Walk Through Windows" = "Alt+Tab";
+      "kwin"."Walk Through Windows (Reverse)" = "Alt+Shift+Tab";
+      "kwin"."Walk Through Windows Alternative" = "none,,Walk Through Windows Alternative";
+      "kwin"."Walk Through Windows Alternative (Reverse)" = "none,,Walk Through Windows Alternative (Reverse)";
+      "kwin"."Walk Through Windows of Current Application" = "Alt+`";
+      "kwin"."Walk Through Windows of Current Application (Reverse)" = "Alt+~";
+      "kwin"."Walk Through Windows of Current Application Alternative" = "none,,Walk Through Windows of Current Application Alternative";
+      "kwin"."Walk Through Windows of Current Application Alternative (Reverse)" = "none,,Walk Through Windows of Current Application Alternative (Reverse)";
+      "kwin"."Window Above Other Windows" = "none,,Keep Window Above Others";
+      "kwin"."Window Below Other Windows" = "none,,Keep Window Below Others";
+      "kwin"."Window Close" = "Alt+F4";
+      "kwin"."Window Custom Quick Tile Bottom" = "none,,Custom Quick Tile Window to the Bottom";
+      "kwin"."Window Custom Quick Tile Left" = "none,,Custom Quick Tile Window to the Left";
+      "kwin"."Window Custom Quick Tile Right" = "none,,Custom Quick Tile Window to the Right";
+      "kwin"."Window Custom Quick Tile Top" = "none,,Custom Quick Tile Window to the Top";
+      "kwin"."Window Fullscreen" = "none,,Make Window Fullscreen";
+      "kwin"."Window Grow Horizontal" = "none,,Expand Window Horizontally";
+      "kwin"."Window Grow Vertical" = "none,,Expand Window Vertically";
+      "kwin"."Window Lower" = "none,,Lower Window";
+      "kwin"."Window Maximize" = "Meta+PgUp";
+      "kwin"."Window Maximize Horizontal" = "none,,Maximize Window Horizontally";
+      "kwin"."Window Maximize Vertical" = "none,,Maximize Window Vertically";
+      "kwin"."Window Minimize" = "Meta+PgDown";
+      "kwin"."Window Move" = "none,,Move Window";
+      "kwin"."Window Move Center" = "none,,Move Window to the Center";
+      "kwin"."Window No Border" = "none,,Toggle Window Titlebar and Frame";
+      "kwin"."Window On All Desktops" = "none,,Keep Window on All Desktops";
+      "kwin"."Window One Desktop Down" = "Meta+Ctrl+Shift+Down";
+      "kwin"."Window One Desktop Up" = "Meta+Ctrl+Shift+Up";
+      "kwin"."Window One Desktop to the Left" = "Meta+Ctrl+Shift+Left";
+      "kwin"."Window One Desktop to the Right" = "Meta+Ctrl+Shift+Right";
+      "kwin"."Window One Screen Down" = "none,,Move Window One Screen Down";
+      "kwin"."Window One Screen Up" = "none,,Move Window One Screen Up";
+      "kwin"."Window One Screen to the Left" = "none,,Move Window One Screen to the Left";
+      "kwin"."Window One Screen to the Right" = "none,,Move Window One Screen to the Right";
+      "kwin"."Window Operations Menu" = "Alt+F3";
+      "kwin"."Window Pack Down" = "none,,Move Window Down";
+      "kwin"."Window Pack Left" = "none,,Move Window Left";
+      "kwin"."Window Pack Right" = "none,,Move Window Right";
+      "kwin"."Window Pack Up" = "none,,Move Window Up";
+      "kwin"."Window Quick Tile Bottom" = "Meta+Down";
+      "kwin"."Window Quick Tile Bottom Left" = "none,,Quick Tile Window to the Bottom Left";
+      "kwin"."Window Quick Tile Bottom Right" = "none,,Quick Tile Window to the Bottom Right";
+      "kwin"."Window Quick Tile Left" = "Meta+Left";
+      "kwin"."Window Quick Tile Right" = "Meta+Right";
+      "kwin"."Window Quick Tile Top" = "Meta+Up";
+      "kwin"."Window Quick Tile Top Left" = "none,,Quick Tile Window to the Top Left";
+      "kwin"."Window Quick Tile Top Right" = "none,,Quick Tile Window to the Top Right";
+      "kwin"."Window Raise" = "none,,Raise Window";
+      "kwin"."Window Resize" = "none,,Resize Window";
+      "kwin"."Window Shade" = "none,,Shade Window";
+      "kwin"."Window Shrink Horizontal" = "none,,Shrink Window Horizontally";
+      "kwin"."Window Shrink Vertical" = "none,,Shrink Window Vertically";
+      "kwin"."Window to Desktop 1" = "Meta+!,,Window to Desktop 1";
+      "kwin"."Window to Desktop 10" = "Meta+),,Window to Desktop 10";
+      "kwin"."Window to Desktop 11" = "none,,Window to Desktop 11";
+      "kwin"."Window to Desktop 12" = "none,,Window to Desktop 12";
+      "kwin"."Window to Desktop 13" = "none,,Window to Desktop 13";
+      "kwin"."Window to Desktop 14" = "none,,Window to Desktop 14";
+      "kwin"."Window to Desktop 15" = "none,,Window to Desktop 15";
+      "kwin"."Window to Desktop 16" = "none,,Window to Desktop 16";
+      "kwin"."Window to Desktop 17" = "none,,Window to Desktop 17";
+      "kwin"."Window to Desktop 18" = "none,,Window to Desktop 18";
+      "kwin"."Window to Desktop 19" = "none,,Window to Desktop 19";
+      "kwin"."Window to Desktop 2" = "Meta+@,,Window to Desktop 2";
+      "kwin"."Window to Desktop 20" = "none,,Window to Desktop 20";
+      "kwin"."Window to Desktop 3" = "Meta+#,,Window to Desktop 3";
+      "kwin"."Window to Desktop 4" = "Meta+$,,Window to Desktop 4";
+      "kwin"."Window to Desktop 5" = "Meta+%,,Window to Desktop 5";
+      "kwin"."Window to Desktop 6" = "Meta+^,,Window to Desktop 6";
+      "kwin"."Window to Desktop 7" = "Meta+&,,Window to Desktop 7";
+      "kwin"."Window to Desktop 8" = "Meta+*,,Window to Desktop 8";
+      "kwin"."Window to Desktop 9" = "Meta+(,,Window to Desktop 9";
+      "kwin"."Window to Next Desktop" = "none,,Window to Next Desktop";
+      "kwin"."Window to Next Screen" = "Meta+Shift+Right";
+      "kwin"."Window to Previous Desktop" = "none,,Window to Previous Desktop";
+      "kwin"."Window to Previous Screen" = "Meta+Shift+Left";
+      "kwin"."Window to Screen 0" = "none,,Move Window to Screen 0";
+      "kwin"."Window to Screen 1" = "none,Meta+!,Move Window to Screen 1";
+      "kwin"."Window to Screen 2" = "none,Meta+@,Move Window to Screen 2";
+      "kwin"."Window to Screen 3" = "none,Meta+#,Move Window to Screen 3";
+      "kwin"."Window to Screen 4" = "none,Meta+$,Move Window to Screen 4";
+      "kwin"."Window to Screen 5" = "none,Meta+%,Move Window to Screen 5";
+      "kwin"."Window to Screen 6" = "none,Meta+^,Move Window to Screen 6";
+      "kwin"."Window to Screen 7" = "none,Meta+&,Move Window to Screen 7";
+      "kwin"."Window to Screen 8" = "none,Meta+*,Move Window to Screen 8";
+      "kwin"."Window to Screen 9" = "none,Meta+(,Move Window to Screen 9";
+      "kwin"."Window to Screen 10" = "none,Meta+),Move Window to Screen 10";
+      "kwin"."disableInputCapture" = "Meta+Shift+Esc";
+      "kwin"."view_actual_size" = "none,Meta+0,Zoom to Actual Size";
+      "kwin"."view_zoom_in" = ["Meta++" "Meta+=,Meta++" "Meta+=,Zoom In"];
+      "kwin"."view_zoom_out" = "Meta+-";
+      "mediacontrol"."mediavolumedown" = "none,,Media volume down";
+      "mediacontrol"."mediavolumeup" = "none,,Media volume up";
+      "mediacontrol"."nextmedia" = "Media Next";
+      "mediacontrol"."pausemedia" = "Media Pause";
+      "mediacontrol"."playmedia" = "none,,Play media playback";
+      "mediacontrol"."playpausemedia" = "Media Play";
+      "mediacontrol"."previousmedia" = "Media Previous";
+      "mediacontrol"."stopmedia" = "Media Stop";
+      "org_kde_powerdevil"."Decrease Keyboard Brightness" = "Keyboard Brightness Down";
+      "org_kde_powerdevil"."Decrease Screen Brightness" = "Monitor Brightness Down";
+      "org_kde_powerdevil"."Decrease Screen Brightness Small" = "Shift+Monitor Brightness Down";
+      "org_kde_powerdevil"."Hibernate" = "Hibernate";
+      "org_kde_powerdevil"."Increase Keyboard Brightness" = "Keyboard Brightness Up";
+      "org_kde_powerdevil"."Increase Screen Brightness" = "Monitor Brightness Up";
+      "org_kde_powerdevil"."Increase Screen Brightness Small" = "Shift+Monitor Brightness Up";
+      "org_kde_powerdevil"."PowerDown" = "Power Down";
+      "org_kde_powerdevil"."PowerOff" = "Power Off";
+      "org_kde_powerdevil"."Sleep" = "Sleep";
+      "org_kde_powerdevil"."Toggle Keyboard Backlight" = "Keyboard Light On/Off";
+      "org_kde_powerdevil"."Turn Off Screen" = [ ];
+      "org_kde_powerdevil"."powerProfile" = ["Battery" "Meta+B,Battery" "Meta+B,Switch Power Profile"];
+      "plasmashell"."activate application launcher" = ["Meta" "Alt+F1,Meta" "Alt+F1,Activate Application Launcher"];
+      "plasmashell"."activate task manager entry 1" = "none,,Activate Task Manager Entry 1";
+      "plasmashell"."activate task manager entry 10" = "none,,Activate Task Manager Entry 10";
+      "plasmashell"."activate task manager entry 2" = "none,,Activate Task Manager Entry 2";
+      "plasmashell"."activate task manager entry 3" = "none,,Activate Task Manager Entry 3";
+      "plasmashell"."activate task manager entry 4" = "none,,Activate Task Manager Entry 4";
+      "plasmashell"."activate task manager entry 5" = "none,,Activate Task Manager Entry 5";
+      "plasmashell"."activate task manager entry 6" = "none,,Activate Task Manager Entry 6";
+      "plasmashell"."activate task manager entry 7" = "none,,Activate Task Manager Entry 7";
+      "plasmashell"."activate task manager entry 8" = "none,,Activate Task Manager Entry 8";
+      "plasmashell"."activate task manager entry 9" = "none,,Activate Task Manager Entry 9";
+      "plasmashell"."clear-history" = "none,,Clear Clipboard History";
+      "plasmashell"."clipboard_action" = "Meta+Ctrl+X";
+      "plasmashell"."cycle-panels" = "Meta+Alt+P";
+      "plasmashell"."cycleNextAction" = "none,,Next History Item";
+      "plasmashell"."cyclePrevAction" = "none,,Previous History Item";
+      "plasmashell"."manage activities" = "Meta+Q";
+      "plasmashell"."next activity" = "Meta+A,none,Walk through activities";
+      "plasmashell"."previous activity" = "Meta+Shift+A,none,Walk through activities (Reverse)";
+      "plasmashell"."repeat_action" = "none,,Manually Invoke Action on Current Clipboard";
+      "plasmashell"."show dashboard" = "Ctrl+F12";
+      "plasmashell"."show-barcode" = "none,,Show Barcode…";
+      "plasmashell"."show-on-mouse-pos" = "Meta+V";
+      "plasmashell"."stop current activity" = "Meta+S";
+      "plasmashell"."switch to next activity" = "none,,Switch to Next Activity";
+      "plasmashell"."switch to previous activity" = "none,,Switch to Previous Activity";
+      "plasmashell"."toggle do not disturb" = "none,,Toggle do not disturb";
+      "services/kitty.desktop"."_launch" = ["Meta+T" "Ctrl+Alt+T"];
+      "services/nemo.desktop"."_launch" = "Meta+E";
+      "services/org.kde.dolphin.desktop"."_launch" = [ ];
+      "services/org.kde.konsole.desktop"."_launch" = [ ];
+      "services/org.kde.spectacle.desktop"."FullScreenScreenShot" = "Print";
+      "services/org.kde.spectacle.desktop"."RecordRegion" = ["Shift+Ins" "Meta+R"];
+      "services/org.kde.spectacle.desktop"."RecordScreen" = "Shift+Print";
+      "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Ins";
+      "services/org.kde.spectacle.desktop"."_launch" = ["" "Meta+Shift+S"];
+      "services/services.kitty.desktop"."_launch" = ["Ctrl+Alt+T" "Meta+T"];
+      "services/services.org.kde.konsole.desktop"."_launch" = [ ];
+      "services/services.org.kde.krunner.desktop"."_launch" = ["Meta+Space" "Alt+F2" "Search" "Alt+Space"];
+      "services/services.org.kde.spectacle.desktop"."FullScreenScreenShot" = [ ];
+      "services/services.org.kde.spectacle.desktop"."RecordRegion" = ["Meta+Shift+R" "Meta+R" "Shift+Ins"];
+      "services/services.org.kde.spectacle.desktop"."RecordScreen" = ["Meta+Alt+R" "Shift+Print"];
+      "services/services.org.kde.spectacle.desktop"."RectangularRegionScreenShot" = ["Ins" "Meta+Shift+Print"];
+      "services/services.org.kde.spectacle.desktop"."_launch" = "Meta+Shift+S";
+      "services/services.plasma-manager-commands.desktop"."launch-kitty1" = "Ctrl+Alt+T";
+      "services/services.plasma-manager-commands.desktop"."launch-kitty2" = "Meta+T";
+    };
+    configFile = {
+      "baloofilerc"."General"."dbVersion" = 2;
+      "baloofilerc"."General"."exclude filters" = "*~,*.part,*.o,*.la,*.lo,*.loT,*.moc,moc_*.cpp,qrc_*.cpp,ui_*.h,cmake_install.cmake,CMakeCache.txt,CTestTestfile.cmake,libtool,config.status,confdefs.h,autom4te,conftest,confstat,Makefile.am,*.gcode,.ninja_deps,.ninja_log,build.ninja,*.csproj,*.m4,*.rej,*.gmo,*.pc,*.omf,*.aux,*.tmp,*.po,*.vm*,*.nvram,*.rcore,*.swp,*.swap,lzo,litmain.sh,*.orig,.histfile.*,.xsession-errors*,*.map,*.so,*.a,*.db,*.qrc,*.ini,*.init,*.img,*.vdi,*.vbox*,vbox.log,*.qcow2,*.vmdk,*.vhd,*.vhdx,*.sql,*.sql.gz,*.ytdl,*.tfstate*,*.class,*.pyc,*.pyo,*.elc,*.qmlc,*.jsc,*.fastq,*.fq,*.gb,*.fasta,*.fna,*.gbff,*.faa,po,CVS,.svn,.git,_darcs,.bzr,.hg,CMakeFiles,CMakeTmp,CMakeTmpQmake,.moc,.obj,.pch,.uic,.npm,.yarn,.yarn-cache,__pycache__,node_modules,node_packages,nbproject,.terraform,.venv,venv,core-dumps,lost+found";
+      "baloofilerc"."General"."exclude filters version" = 9;
+      "baloofilerc"."General"."foldersx5b$ex5d" = "$HOME/,/run/media/nako/Games/";
+      "baloofilerc"."General"."index hidden folders" = true;
+      "dolphinrc"."General"."ViewPropsTimestamp" = "2025,5,23,17,7,32.442";
+      "dolphinrc"."KFileDialog Settings"."Places Icons Auto-resize" = false;
+      "dolphinrc"."KFileDialog Settings"."Places Icons Static Size" = 22;
+      "kactivitymanagerdrc"."activities"."e2cb32e1-a872-4387-88b3-85dc4ef2f19a" = "Default";
+      "kactivitymanagerdrc"."main"."currentActivity" = "e2cb32e1-a872-4387-88b3-85dc4ef2f19a";
+      "kcminputrc"."Libinput.1267.12678.MSFT0001:01 04F3:3186 Touchpad"."PointerAccelerationProfile" = 2;
+      "kcminputrc"."Mouse"."cursorSize" = 24;
+      "kcminputrc"."Mouse"."cursorTheme" = "Sweet-cursors";
+      "kded5rc"."Module-browserintegrationreminder"."autoload" = false;
+      "kded5rc"."Module-device_automounter"."autoload" = false;
+      "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "820,581";
+      "kdeglobals"."General"."UseSystemBell" = true;
+      "kdeglobals"."Icons"."Theme" = "candy-icons";
+      "kdeglobals"."KDE"."widgetStyle" = "BreezeDark";
+      "kdeglobals"."KFileDialog Settings"."Allow Expansion" = false;
+      "kdeglobals"."KFileDialog Settings"."Automatically select filename extension" = true;
+      "kdeglobals"."KFileDialog Settings"."Breadcrumb Navigation" = true;
+      "kdeglobals"."KFileDialog Settings"."Decoration position" = 2;
+      "kdeglobals"."KFileDialog Settings"."LocationCombo Completionmode" = 5;
+      "kdeglobals"."KFileDialog Settings"."PathCombo Completionmode" = 5;
+      "kdeglobals"."KFileDialog Settings"."Show Bookmarks" = false;
+      "kdeglobals"."KFileDialog Settings"."Show Full Path" = false;
+      "kdeglobals"."KFileDialog Settings"."Show Inline Previews" = true;
+      "kdeglobals"."KFileDialog Settings"."Show Preview" = false;
+      "kdeglobals"."KFileDialog Settings"."Show Speedbar" = true;
+      "kdeglobals"."KFileDialog Settings"."Show hidden files" = false;
+      "kdeglobals"."KFileDialog Settings"."Sort by" = "Name";
+      "kdeglobals"."KFileDialog Settings"."Sort directories first" = true;
+      "kdeglobals"."KFileDialog Settings"."Sort hidden files last" = false;
+      "kdeglobals"."KFileDialog Settings"."Sort reversed" = false;
+      "kdeglobals"."KFileDialog Settings"."Speedbar Width" = 140;
+      "kdeglobals"."KFileDialog Settings"."View Style" = "DetailTree";
+      "kdeglobals"."KScreen"."ScreenScaleFactors" = "eDP-1=1;";
+      "kdeglobals"."KScreen"."XwaylandClientsScale" = false;
+      "kdeglobals"."Shortcuts"."Paste" = "Ctrl+V";
+      "kdeglobals"."WM"."activeBackground" = "30,30,46";
+      "kdeglobals"."WM"."activeBlend" = "249,226,175";
+      "kdeglobals"."WM"."activeForeground" = "205,214,244";
+      "kdeglobals"."WM"."inactiveBackground" = "30,30,46";
+      "kdeglobals"."WM"."inactiveBlend" = "69,71,90";
+      "kdeglobals"."WM"."inactiveForeground" = "205,214,244";
+      "krunnerrc"."Plugins"."baloosearchEnabled" = true;
+      "ksplashrc"."KSplash"."Engine" = "none";
+      "ksplashrc"."KSplash"."Theme" = "None";
+      "kwalletrc"."Wallet"."Close When Idle" = false;
+      "kwalletrc"."Wallet"."Close on Screensaver" = false;
+      "kwalletrc"."Wallet"."Default Wallet" = "kdewallet";
+      "kwalletrc"."Wallet"."Enabled" = false;
+      "kwalletrc"."Wallet"."Idle Timeout" = 10;
+      "kwalletrc"."Wallet"."Launch Manager" = false;
+      "kwalletrc"."Wallet"."Leave Manager Open" = false;
+      "kwalletrc"."Wallet"."Leave Open" = true;
+      "kwalletrc"."Wallet"."Prompt on Open" = false;
+      "kwalletrc"."Wallet"."Use One Wallet" = true;
+      "kwalletrc"."org.freedesktop.secrets"."apiEnabled" = true;
+      "kwinrc"."Activities.LastVirtualDesktop"."e2cb32e1-a872-4387-88b3-85dc4ef2f19a" = "Desktop_2";
+      "kwinrc"."Activities/LastVirtualDesktop"."e2cb32e1-a872-4387-88b3-85dc4ef2f19a" = "Desktop_1";
+      "kwinrc"."Desktops"."Id_1" = "Desktop_1";
+      "kwinrc"."Desktops"."Id_10" = "Desktop_10";
+      "kwinrc"."Desktops"."Id_2" = "Desktop_2";
+      "kwinrc"."Desktops"."Id_3" = "Desktop_3";
+      "kwinrc"."Desktops"."Id_4" = "Desktop_4";
+      "kwinrc"."Desktops"."Id_5" = "Desktop_5";
+      "kwinrc"."Desktops"."Id_6" = "Desktop_6";
+      "kwinrc"."Desktops"."Id_7" = "Desktop_7";
+      "kwinrc"."Desktops"."Id_8" = "Desktop_8";
+      "kwinrc"."Desktops"."Id_9" = "Desktop_9";
+      "kwinrc"."Desktops"."Number" = 10;
+      "kwinrc"."Desktops"."Rows" = 10;
+      "kwinrc"."Effect-shakecursor"."Magnification" = 2;
+      "kwinrc"."Tiling"."padding" = 4;
+      "kwinrc"."Tiling.eb491a77-2ca2-5509-b23e-c0f20051f42e"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      "kwinrc"."Tiling/eb491a77-2ca2-5509-b23e-c0f20051f42e"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      "kwinrc"."Xwayland"."XwaylandEavesdrops" = "All";
+      "kwinrc"."Xwayland"."XwaylandEavesdropsMouse" = true;
+      "kwinrc"."org.kde.kdecoration2"."theme" = "__aurorae__svg__Sweet-Dark";
+      "kxkbrc"."Layout"."DisplayNames" = ",";
+      "kxkbrc"."Layout"."LayoutList" = "us,ir";
+      "kxkbrc"."Layout"."Options" = "grp:alt_shift_toggle";
+      "kxkbrc"."Layout"."ResetOldOptions" = true;
+      "kxkbrc"."Layout"."Use" = true;
+      "kxkbrc"."Layout"."VariantList" = ",pes_keypad";
+      "plasma-localerc"."Formats"."LANG" = "en_US.UTF-8";
+      "plasmaparc"."General"."RaiseMaximumVolume" = true;
+      "plasmaparc"."General"."VolumeStep" = 10;
+      "plasmarc"."Theme"."name" = "default";
+      "spectaclerc"."General"."clipboardGroup" = "PostScreenshotCopyImage";
+      "spectaclerc"."ImageSave"."translatedScreenshotsFolder" = "Screenshots";
+      "spectaclerc"."VideoSave"."translatedScreencastsFolder" = "Screencasts";
+    };
+    dataFile = {
 
+    };
+  };
 
 
 dconf = {
   enable = true;
   settings = {
-
-    #AMHOAZ=keyboard
-    "org/gnome/desktop/input-sources" = {"xkb-options" = ["grp:alt_shift_toggle"];};
-
     # --- Existing Cinnamon Settings ---
     "org/cinnamon/desktop/applications/terminal" = {
       exec = "kitty";
@@ -992,133 +1326,9 @@ dconf = {
        exec = "kitty";
     };
 
-    # --- Existing GNOME Shell Settings ---
-    "org/gnome/shell" = {
-      disable-extension-version-validation = true;
-      last-selected-power-profile = "performance"; # Added
-       disable-user-extensions = false;
-       enabled-extensions = [
-#	# use the command 'gnome-extensions list'
-	"appindicatorsupport@rgcjonas.gmail.com"
-	"caffeine@patapon.info"
-	"clipboard-indicator@tudmotu.com"
-	"dash-to-panel@jderose9.github.com"
-	"gsconnect@andyholmes.github.io"
-	"drive-menu@gnome-shell-extensions.gcampax.github.com"
-#	"forge@jmmaranan.com"
-	"gtk4-ding@smedius.gitlab.com"
-	"cloudflare-warp-toggle@khaled.is-a.dev"
-#	"just-perfection-desktop@just-perfection"
-      ];
     };
-
-    # --- Existing GNOME Shell Extension Settings 
-    "org/gnome/shell/extensions/dash-to-panel" = {
-      animate-appicon-hover = true;
-    };
-
-# This specifically targets the gtk4-ding extension , how to find : dconf watch /
-    "org/gnome/shell/extensions/gtk4-ding" = {
-      keep-arranged = true;
-      sort-special-folders = false;
-      keep-stacked = true;
-    };
-
-
-    # --- Custom Keybindings for Applications ---
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-      name = "Terminal";
-      command = "kitty";
-      binding = "<Control><Alt>t";
-    };
-
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-      name = "Browser";
-      command = "librewolf";
-      binding = "<Super>b";
-    };
-
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
-      name = "Terminal 2";
-      command = "kitty";
-      binding = "<Super>t";
-    };
-
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [
-
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
-
-      ];
-    };
-
-
-    # --- GNOME Desktop WM Keybindings ---
-    "org/gnome/desktop/wm/keybindings" = {
-      move-to-workspace-left = ["<Shift><Super>Left"];
-      move-to-monitor-left = [];
-      move-to-workspace-right = ["<Shift><Super>Right"];
-      move-to-monitor-right = [];
-      switch-to-workspace-1 = ["<Super>1"];
-      switch-to-workspace-2 = ["<Super>2"];
-      switch-to-workspace-3 = ["<Super>3"];
-      switch-to-workspace-4 = ["<Super>4"];
-      ## Amhoaz
-      switch-input-source          = ["<Alt>Shift_L"];
-      switch-input-source-backward = ["<Shift>Alt_L"];
-    };
-
-    # --- GNOME Shell Keybindings ---
-    "org/gnome/shell/keybindings" = {
-      switch-to-application-1 = [];
-      switch-to-application-2 = [];
-      switch-to-application-3 = [];
-      switch-to-application-4 = [];
-    };
-
-    # --- Workspace Settings ---
-    "org/gnome/mutter" = {
-      dynamic-workspaces = false;
-    };
-
-    "org/gnome/desktop/wm/preferences" = {
-      num-workspaces = 10;
-    };
-
-    # --- New GNOME Desktop Interface Settings ---
-    "org/gnome/desktop/interface" = {
-      clock-format = "24h";
-      clock-show-seconds = false;
-      show-battery-percentage = true;
-      color-scheme = "prefer-dark";
-    };
-
-    # --- New GTK Settings ---
-    "org/gtk/settings/file-chooser" = {
-      clock-format = "24h";
-    };
-
-    # --- New GNOME Desktop Sound Settings ---
-    "org/gnome/desktop/sound" = {
-      allow-volume-above-100-percent = true;
-    };
-
-    # --- New GNOME Desktop Break Reminders Settings ---
-    "org/gnome/desktop/break-reminders" = {
-      selected-breaks = ["eyesight"];
-    };
-
-    # --- New GNOME Desktop Privacy Settings ---
-    "org/gnome/desktop/privacy" = {
-      remove-old-temp-files = true;
-      remove-old-trash-files = true;
-    };
-
-
   };
-};
+
 
 
 
@@ -1413,6 +1623,21 @@ gtk = {
       gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
 };
+
+stylix.targets.qt.enable = false;
+  qt = {
+    enable = true;
+    platformTheme.name = "qt6ct";
+    style.name = "kvantum";
+  };
+
+  xdg.configFile = {
+    "Kvantum/Sweet".source = "${pkgs.sweet-nova}/share/Kvantum/Sweet";
+    "Kvantum/kvantum.kvconfig".text = ''
+      [General]
+      theme=Sweet
+    '';
+  };
 
 #########
 # kitty config
