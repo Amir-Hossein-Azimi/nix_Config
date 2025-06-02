@@ -276,7 +276,7 @@ mcontrolcenter
 ####
 #### media
 #suwayomi-server
-libreoffice
+#libreoffice
 ani-cli
 #stremio
 mpv-shim-default-shaders
@@ -331,7 +331,7 @@ p7zip
    openvpn
    networkmanager-openvpn
   #sing-box
-  #hiddify-app
+  hiddify-app
   #libreswan
   #warp-plus
   #proxychains-ng
@@ -343,6 +343,7 @@ p7zip
 ####
 #### web stuff
 #wget
+motrix
 httping
 aria
 #proton-pass
@@ -364,6 +365,8 @@ exfatprogs
 ####
 #### programing
   #python3
+
+   #.....
   vscodium-fhs
   conda
   #bun
@@ -388,7 +391,7 @@ kdePackages.kate
 #ventoy-full-qt
 fastfetch
 nemo-with-extensions
-
+obsidian
 
 #######################
 # nur repo:
@@ -405,8 +408,8 @@ nemo-with-extensions
 ################################################
 # stable repo separation because i said so
 ################################################
-# pkgs-stable.libreoffice
-
+#pkgs-stable.libreoffice
+libreoffice
 ];
 
 
@@ -584,9 +587,9 @@ fonts.packages = with pkgs; [
 
 
   networking.nameservers = [
-  "1.1.1.1"
+  #"1.1.1.1"
 #  "1.0.0.1"
-  "8.8.8.8"
+  #"8.8.8.8"
 #  "8.8.4.4"
 ];
 
@@ -692,7 +695,9 @@ image = pkgs.fetchurl {
  #https://www.pixelstalk.net/wp-content/uploads/image12/A-tranquil-anime-cityscape-wallpaper-with-simple-shapes-and-a-muted-calming-color-palette.jpg
  #sha256-RHdg4aKmLgFL1jn84KjjeERg2LOPQIQSCgimD+j5+t4=
 #for download from internet and cache
+enableReleaseChecks = false;
 
+targets.qt.enable = false;
 
 
 };
@@ -823,8 +828,8 @@ environment.sessionVariables = {
 #  podman = "docker";
   blame = "systemd-analyze blame";
   config = "sudo nano /etc/nixos/configuration.nix";
-  update-sys = "sudo nixos-rebuild switch --fast --flake /etc/nixos/";
-  upgrade-sys = "cd /etc/nixos/ && sudo nix flake update && sudo nixos-rebuild switch --upgrade --flake /etc/nixos/ && sudo nixos-rebuild boot --upgrade --flake /etc/nixos/ && cd ~ && conda-shell -c 'conda init fish && conda install python=3.11 -y && pip install -U ipython g4f[all] gallery-dl orjson'";
+  update-sys = "rm -rf /home/amir/.gtkrc-2.0 && sudo nixos-rebuild switch --fast --flake /etc/nixos/";
+  upgrade-sys = "rm -rf /home/amir/.gtkrc-2.0 && cd /etc/nixos/ && sudo nix flake update && sudo nixos-rebuild switch --upgrade --flake /etc/nixos/ && sudo nixos-rebuild boot --upgrade --flake /etc/nixos/ && cd ~ && conda-shell -c 'conda init fish && conda install python=3.11 -y && pip install -U ipython g4f[all] gallery-dl orjson'";
   copilot = "npx copilot-api@latest start";
   fixwifi = "sudo airmon-ng stop wlp0s20f3mon && sudo systemctl start wpa_supplicant.service && sudo systemctl start NetworkManager.service";
   clean = "sudo rm -rf /root/.cache && sudo nix-collect-garbage -d && sudo nix-store --optimize && sudo rm -rf /tmp/ && sudo mkdir /tmp && sudo chmod 1777 /tmp && sudo flatpak remove --unused && pip cache purge && sudo rm -rf ~/.cache/ && sudo rm -rf /root/.nix-defexpr/channels && sudo rm -rf /nix/var/nix/profiles/per-user/root/channels && sudo rm -rf /root/.nix-defexpr/channels";
@@ -940,7 +945,7 @@ environment.sessionVariables = {
 # https://nix-community.github.io/home-manager/options.xhtml
 # https://home-manager-options.extranix.com/
   home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "bak";
+  home-manager.backupFileExtension = "";
   home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
   
   home-manager.users.amir = {
@@ -949,6 +954,7 @@ environment.sessionVariables = {
     userName  = "Amir-Hossein-Azimi";
     userEmail = "tweaterinestageram20@gmail.com";
    };
+
 
  #kde
 # if you want to change stuff, disable plasma manager, do your own settings, then export using:
@@ -1194,19 +1200,19 @@ environment.sessionVariables = {
       "services/nemo.desktop"."_launch" = "Meta+E";
       "services/org.kde.dolphin.desktop"."_launch" = [ ];
       "services/org.kde.konsole.desktop"."_launch" = [ ];
-      "services/org.kde.spectacle.desktop"."FullScreenScreenShot" = "Print";
-      "services/org.kde.spectacle.desktop"."RecordRegion" = ["Shift+Ins" "Meta+R"];
-      "services/org.kde.spectacle.desktop"."RecordScreen" = "Shift+Print";
-      "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Ins";
-      "services/org.kde.spectacle.desktop"."_launch" = ["" "Meta+Shift+S"];
+     # "services/org.kde.spectacle.desktop"."FullScreenScreenShot" = [ ];
+      #"services/org.kde.spectacle.desktop"."RecordRegion" = ["Shift+Ins" "Meta+R"];
+      #"services/org.kde.spectacle.desktop"."RecordScreen" = "Shift+Print";
+     # "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Ins";
+     # "services/org.kde.spectacle.desktop"."_launch" = ["Print"];
       "services/services.kitty.desktop"."_launch" = ["Ctrl+Alt+T" "Meta+T"];
       "services/services.org.kde.konsole.desktop"."_launch" = [ ];
       "services/services.org.kde.krunner.desktop"."_launch" = ["Meta+Space" "Alt+F2" "Search" "Alt+Space"];
-      "services/services.org.kde.spectacle.desktop"."FullScreenScreenShot" = [ ];
-      "services/services.org.kde.spectacle.desktop"."RecordRegion" = ["Meta+Shift+R" "Meta+R" "Shift+Ins"];
-      "services/services.org.kde.spectacle.desktop"."RecordScreen" = ["Meta+Alt+R" "Shift+Print"];
-      "services/services.org.kde.spectacle.desktop"."RectangularRegionScreenShot" = ["Ins" "Meta+Shift+Print"];
-      "services/services.org.kde.spectacle.desktop"."_launch" = "Meta+Shift+S";
+      #"services/services.org.kde.spectacle.desktop"."FullScreenScreenShot" = [ ];
+      #"services/services.org.kde.spectacle.desktop"."RecordRegion" = ["Meta+Shift+R" "Meta+R" "Shift+Ins"];
+      #"services/services.org.kde.spectacle.desktop"."RecordScreen" = ["Meta+Alt+R" "Shift+Print"];
+      #"services/services.org.kde.spectacle.desktop"."RectangularRegionScreenShot" = ["Ins" "Meta+Shift+Print"];
+      #"services/services.org.kde.spectacle.desktop"."_launch" = "Print";
       "services/services.plasma-manager-commands.desktop"."launch-kitty1" = "Ctrl+Alt+T";
       "services/services.plasma-manager-commands.desktop"."launch-kitty2" = "Meta+T";
     };
@@ -2031,20 +2037,20 @@ OPENAI_API_KEY=AIzaSyDdB1cLD2SSusluKuYq5MB91naJsC3ACU0
       "image/tiff" = "org.kde.gwenview.desktop";
       "image/webp" = "org.kde.gwenview.desktop";
       "image/svg+xml" = "org.kde.gwenview.desktop";
-      "text/html" = "librewolf.desktop";
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
-      "x-scheme-handler/about" = "librewolf.desktop";
-      "x-scheme-handler/unknown" = "librewolf.desktop";
-      "x-scheme-handler/chrome" = "librewolf.desktop";
-      "x-scheme-handler/mailto" = "librewolf.desktop";
-      "application/x-extension-htm" = "librewolf.desktop";
-      "application/x-extension-html" = "librewolf.desktop";
-      "application/x-extension-shtml" = "librewolf.desktop";
-      "application/xhtml+xml" = "librewolf.desktop";
-      "application/xml" = "librewolf.desktop";
-      "application/x-extension-xhtml" = "librewolf.desktop";
-      "application/x-extension-xht" = "librewolf.desktop";
+      "text/html" = "google-chrome.desktop";
+      "x-scheme-handler/http" = "google-chrome.desktop";
+      "x-scheme-handler/https" = "google-chrome.desktop";
+      "x-scheme-handler/about" = "google-chrome.desktop";
+      "x-scheme-handler/unknown" = "google-chrome.desktop";
+      "x-scheme-handler/chrome" = "google-chrome.desktop";
+      "x-scheme-handler/mailto" = "google-chrome.desktop";
+      "application/x-extension-htm" = "google-chrome.desktop";
+      "application/x-extension-html" = "google-chrome.desktop";
+      "application/x-extension-shtml" = "google-chrome.desktop";
+      "application/xhtml+xml" = "google-chrome.desktop";
+      "application/xml" = "google-chrome.desktop";
+      "application/x-extension-xhtml" = "google-chrome.desktop";
+      "application/x-extension-xht" = "google-chrome.desktop";
       #"application/vnd.comicbook+zip" = "okularApplication_comicbook.desktop";
       #"application/pdf" = "okularApplication_comicbook.desktop";
     }; };
