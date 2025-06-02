@@ -1979,31 +1979,7 @@ inhibit-gnome
 ];
 # end of mpv
 
-# sgpt config
-home.file.".config/shell_gpt/.sgptrc".text = ''
-CHAT_CACHE_PATH=/tmp/chat_cache
-CACHE_PATH=/tmp/cache
-CHAT_CACHE_LENGTH=100
-CACHE_LENGTH=100
-REQUEST_TIMEOUT=60
-DEFAULT_MODEL=gemini-2.5-flash-preview-04-17
-DEFAULT_COLOR=magenta
-ROLE_STORAGE_PATH=/home/amir/.config/shell_gpt/roles
-DEFAULT_EXECUTE_SHELL_CMD=false
-DISABLE_STREAMING=false
-CODE_THEME=dracula
-OPENAI_FUNCTIONS_PATH=/home/amir/.config/shell_gpt/functions
-OPENAI_USE_FUNCTIONS=true
-SHOW_FUNCTIONS_OUTPUT=false
-API_BASE_URL=https://openai-gemini.netlify.app/edge/v1
-PRETTIFY_MARKDOWN=true
-USE_LITELLM=false
-SHELL_INTERACTION=true
-OS_NAME=auto
-SHELL_NAME=auto
-OPENAI_API_KEY=AIzaSyDdB1cLD2SSusluKuYq5MB91naJsC3ACU0
-'';
-# sgpt end
+
 
 # set default format
 # to find out the format, example:
