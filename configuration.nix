@@ -241,6 +241,7 @@ desktop-file-utils
 #kde
 kdePackages.okular
 kdePackages.konsole
+qalculate-qt
 
 # sddm
 sddm-sugar-dark #sddm theme
@@ -331,7 +332,7 @@ p7zip
    openvpn
    networkmanager-openvpn
   #sing-box
-  hiddify-app
+  #hiddify-app
   #libreswan
   #warp-plus
   #proxychains-ng
@@ -820,7 +821,7 @@ services.xserver.xkb = {
 environment.sessionVariables = {
 #  WLR_NO_HARDWARE_CURSORS = "1";
   ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-  NIXOS_OZONE_WL = "1";
+  #NIXOS_OZONE_WL = "1"; #because program with x11 had this problem
 };
 
 ### add aliases
