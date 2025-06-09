@@ -228,7 +228,8 @@ inputs, ... }:
   environment.systemPackages = with pkgs; [
 # official repo search:
 # https://search.nixos.org/ 
-
+xorg.libXt
+xorg.libX11
 
 
 neohtop
@@ -328,6 +329,7 @@ p7zip
 #  hcxtools
 ########
 #### vpn stuff
+   pptp
    nekoray
    openvpn
    networkmanager-openvpn
@@ -626,8 +628,14 @@ fonts.packages = with pkgs; [
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-
+  networking.firewall = {
+  enable = true;
+  allowedTCPPorts = [ 1723 ];       # PPTP control port
+  allowedUDPPorts = [ ];
+  extraCommands = ''
+    iptables -A INPUT -p gre -j ACCEPT
+  '';
+};
   #services.sing-box.enable = true;
   #services.xray.enable = true;
 
@@ -816,11 +824,12 @@ services.xserver.xkb = {
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1";
 #    browser_executable_path = "/run/current-system/sw/bin/chromium";
     NIXPKGS_ALLOW_UNFREE = "1";
+    OBSIDIAN_ARGS = "--disable-gpu";
   };
 
 environment.sessionVariables = {
 #  WLR_NO_HARDWARE_CURSORS = "1";
-  #ELECTRON_OZONE_PLATFORM_HINT = "wayland"; #because program with x11 had this problem
+  ELECTRON_OZONE_PLATFORM_HINT = "wayland"; #because program with x11 had this problem
   NIXOS_OZONE_WL = "1";
 };
 
