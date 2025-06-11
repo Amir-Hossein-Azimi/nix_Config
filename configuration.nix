@@ -574,8 +574,19 @@ fonts.packages = with pkgs; [
 #####################################################
 # networking
 
-
-  networking.networkmanager.enable = true;
+   #services.openvpn.servers = {
+    #myVPN = {
+      #config = ''
+        #config /home/amir/Downloads/SirjanConf/Sirjan.ovpn
+        #auth-user-pass /home/amir/Downloads/SirjanConf/Sirjan.cred
+        #verb 9
+      #'';
+     # autoStart = false;
+    #};
+  #};
+  networking.networkmanager = {
+   enable = true;
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
