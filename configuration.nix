@@ -370,7 +370,7 @@ exfatprogs
   #python3
 
    #.....
-  vscodium-fhs
+
   conda
   #bun
   #gcc
@@ -395,6 +395,12 @@ kdePackages.kate
 fastfetch
 nemo-with-extensions
 obsidian
+
+#android developer
+vscodium-fhs
+android-studio
+fvm
+dart
 
 #######################
 # nur repo:
