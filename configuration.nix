@@ -839,9 +839,10 @@ services.xserver.xkb = {
   };
 
 environment.sessionVariables = {
+   #because program with x11 had this problem
 #  WLR_NO_HARDWARE_CURSORS = "1";
-  ELECTRON_OZONE_PLATFORM_HINT = "wayland"; #because program with x11 had this problem
-  NIXOS_OZONE_WL = "1";
+#  ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+#  NIXOS_OZONE_WL = "1";
 };
 
 ### add aliases
