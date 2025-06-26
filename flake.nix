@@ -73,6 +73,7 @@ programsdb.inputs.nixpkgs.follows = "nixpkgs";
 
   # Nix configuration settings
   nixConfig = {
+    # retry-count = 10;
     # Additional cache servers for fetching packages
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -132,6 +133,7 @@ programsdb.inputs.nixpkgs.follows = "nixpkgs";
 #          nix-flatpak.nixosModules.nix-flatpak # Include Nix Flatpak modules
 #          chaotic.nixosModules.default # Include Chaotic modules
           ./configuration.nix # Include the main configuration file
+
         ];
       };
     };

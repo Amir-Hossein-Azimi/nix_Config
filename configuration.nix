@@ -35,7 +35,6 @@ inputs, ... }:
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
- 
   # nix gc
   nix.gc.automatic = true;
   nix.gc.dates = "daily";
@@ -228,10 +227,7 @@ inputs, ... }:
   environment.systemPackages = with pkgs; [
 # official repo search:
 # https://search.nixos.org/ 
-xorg.libXt
-xorg.libX11
-
-
+htop
 neohtop
 
 wget # i search for it
@@ -329,7 +325,7 @@ p7zip
 #  hcxtools
 ########
 #### vpn stuff
-   pptp
+   #pptp
    nekoray
    openvpn
    networkmanager-openvpn
@@ -337,7 +333,7 @@ p7zip
   #hiddify-app
   #libreswan
   #warp-plus
-  #proxychains-ng
+  proxychains
   wg-netmanager
   #sing-geoip
   #protonvpn-cli
@@ -397,10 +393,10 @@ nemo-with-extensions
 obsidian
 
 #android developer
-vscodium-fhs
+vscode-fhs
 android-studio
-fvm
-dart
+#fvm
+flutter
 
 #######################
 # nur repo:
@@ -548,6 +544,7 @@ fonts.packages = with pkgs; [
 #    "binder_linux"
 #    "ashmem_linux"
 #    "memfd"
+ #     "tun"
 #  ];
 #  boot.extraModulePackages = with config.boot.kernelPackages; [
     # Add any extra module packages here
@@ -611,6 +608,8 @@ fonts.packages = with pkgs; [
 #  "1.0.0.1"
   #"8.8.8.8"
 #  "8.8.4.4"
+ # "185.51.200.2"
+ # "178.22.122.100"
 ];
 
   #tor
@@ -618,12 +617,131 @@ fonts.packages = with pkgs; [
 #  services.tor.client.enable = true;
 
   # proxychains:
-#  programs.proxychains.proxies = { myproxy =
-#  { type = "socks4";
-#    host = "127.0.0.1";
-#    port = 9050;
-#  };
-#};
+  programs.proxychains.enable = true;
+  environment.etc."proxychains.conf".text = "
+   # proxychains.conf  VER 4
+   #
+   #        HTTP, SOCKS4, SOCKS5 tunneling proxifier with DNS.
+   #
+
+   # The option below identifies how the ProxyList is treated.
+   # only one option should be uncommented at time,
+   # otherwise the last appearing option will be accepted
+   #
+   #dynamic_chain
+   #
+   # Dynamic - Each connection will be done via chained proxies
+   # all proxies chained in the order as they appear in the list
+   # at least one proxy must be online to play in chain
+   # (dead proxies are skipped)
+   # otherwise EINTR is returned to the app
+   #
+   strict_chain
+   #
+   # Strict - Each connection will be done via chained proxies
+   # all proxies chained in the order as they appear in the list
+   # all proxies must be online to play in chain
+   # otherwise EINTR is returned to the app
+   #
+   #random_chain
+   #
+   # Random - Each connection will be done via random proxy
+   # (or proxy chain, see  chain_len) from the list.
+   # this option is good to test your IDS :)
+
+   # Make sense only if random_chain
+   #chain_len = 2
+
+   # Quiet mode (no output from library)
+   #quiet_mode
+
+   # Proxy DNS requests - no leak for DNS data
+   proxy_dns
+
+   # set the class A subnet number to usefor use of the internal remote DNS mapping
+   # we use the reserved 224.x.x.x range by default,
+   # if the proxified app does a DNS request, we will return an IP from that  range.
+   # on further accesses to this ip we will send the saved DNS name to the proxy.
+   # in case some control-freak app checks the returned ip, and denies to
+   # connect, you can use another subnet, e.g. 10.x.x.x or 127.x.x.x.
+   # of course you should make sure that the proxified app does not need
+   # *real* access to this subnet.
+   # i.e. dont use the same subnet then in the localnet section
+   #remote_dns_subnet 127
+   #remote_dns_subnet 10
+   remote_dns_subnet 224
+
+   # Some timeouts in milliseconds
+   tcp_read_time_out 15000
+   tcp_connect_time_out 8000
+
+   # By default enable localnet for loopback address ranges
+   # RFC5735 Loopback address range
+   localnet 127.0.0.0/255.0.0.0
+   # RFC1918 Private Address Ranges
+   # localnet 10.0.0.0/255.0.0.0
+   # localnet 172.16.0.0/255.240.0.0
+   # localnet 192.168.0.0/255.255.0.0
+
+
+   # Example for localnet exclusion
+   ## Exclude connections to 192.168.1.0/24 with port 80
+   # localnet 192.168.1.0:80/255.255.255.0
+
+   ## Exclude connections to 192.168.100.0/24
+   # localnet 192.168.100.0/255.255.255.0
+
+   ## Exclude connections to ANYwhere with port 80
+   # localnet 0.0.0.0:80/0.0.0.0
+
+
+   ### Examples for dnat
+   ## Trying to proxy connections to destinations which are dnatted,
+   ## will result in proxying connections to the new given destinations.
+   ## Whenever I connect to 1.1.1.1 on port 1234 actually connect to 1.1.1.2 on port 443
+   # dnat 1.1.1.1:1234  1.1.1.2:443
+
+   ## Whenever I connect to 1.1.1.1 on port 443 actually connect to 1.1.1.2 on port 443
+   ## (no need to write :443 again)
+   # dnat 1.1.1.2:443  1.1.1.2
+
+   ## No matter what port I connect to on 1.1.1.1 port actually connect to 1.1.1.2 on port 443
+   # dnat 1.1.1.1  1.1.1.2:443
+
+   ## Always, instead of connecting to 1.1.1.1, connect to 1.1.1.2
+   # dnat 1.1.1.1  1.1.1.2
+
+
+   # ProxyList format
+   #       type  host  port [user pass]
+   #       (values separated by 'tab' or 'blank')
+   #
+   #
+   #        Examples:
+   #
+   #        socks5	192.168.67.78	1080	lamer	secret
+   #		http	192.168.89.3	8080	justu	hidden
+   #	 	socks4	192.168.1.49	1080
+   #	    http	192.168.39.93	8080
+   #
+   #
+   #       proxy types: http, socks4, socks5, raw
+   #        * raw: The traffic is simply forwarded to the proxy without modification.
+
+   #
+   [ProxyList]
+   # add proxy here ...
+   # meanwhile
+   socks4 	127.0.0.1 10808
+
+  ";
+  programs.proxychains.proxies = {
+  myproxy ={
+    type = "socks4";
+    host = "127.0.0.1";
+    port = 10808;
+  };
+};
 
   # add crt manually
 #  security.pki.certificateFiles =["${pkgs.cacert}/home/amir/Public/mitmproxy-ca-cert.crt"];
@@ -645,14 +763,7 @@ fonts.packages = with pkgs; [
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall = {
-  enable = true;
-  allowedTCPPorts = [ 1723 ];       # PPTP control port
-  allowedUDPPorts = [ ];
-  extraCommands = ''
-    iptables -A INPUT -p gre -j ACCEPT
-  '';
-};
+  networking.firewall.enable = true;
   #services.sing-box.enable = true;
   #services.xray.enable = true;
 
@@ -834,6 +945,7 @@ services.xserver.xkb = {
 
 ### add to shell to make cuda work for binaries
     environment.variables = {
+
     #CUDA_PATH = "${pkgs.cudatoolkit}";
     EXTRA_LDFLAGS = "-L/lib -L${pkgs.linuxPackages.nvidia_x11}/lib";
     EXTRA_CCFLAGS = "-I/usr/include";
@@ -841,7 +953,6 @@ services.xserver.xkb = {
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1";
 #    browser_executable_path = "/run/current-system/sw/bin/chromium";
     NIXPKGS_ALLOW_UNFREE = "1";
-    OBSIDIAN_ARGS = "--disable-gpu";
   };
 
 environment.sessionVariables = {
@@ -849,6 +960,8 @@ environment.sessionVariables = {
 #  WLR_NO_HARDWARE_CURSORS = "1";
 #  ELECTRON_OZONE_PLATFORM_HINT = "wayland";
 #  NIXOS_OZONE_WL = "1";
+    #for gemini
+    GOOGLE_CLOUD_PROJECT="amhoaz";
 };
 
 ### add aliases
@@ -863,7 +976,7 @@ environment.sessionVariables = {
   clean = "sudo rm -rf /root/.cache && sudo nix-collect-garbage -d && sudo nix-store --optimize && sudo rm -rf /tmp/ && sudo mkdir /tmp && sudo chmod 1777 /tmp && sudo flatpak remove --unused && pip cache purge && sudo rm -rf ~/.cache/ && sudo rm -rf /root/.nix-defexpr/channels && sudo rm -rf /nix/var/nix/profiles/per-user/root/channels && sudo rm -rf /root/.nix-defexpr/channels";
   rollback = "sudo nix-rebuild --rollback switch";
   flakes = "sudo nano /etc/nixos/flake.nix";
-  htop = "btop";
+  #htop = "btop";
   myip = "curl ipinfo.io --proxy ''";
   chat = "sgpt --no-cache --repl temp";
   weather = "curl 'wttr.in/?format=4' --proxy ''";
@@ -983,7 +1096,10 @@ environment.sessionVariables = {
     userEmail = "tweaterinestageram20@gmail.com";
    };
 
-
+  #  home.sessionVariables = {
+  #  ANDROID_SDK_ROOT = "/home/amir/FROMOLDPC/Project/AndroidStudioSdk/sdk";
+  #  HELLO_NIXOS = "It works!";
+  #};
  #kde
 # if you want to change stuff, disable plasma manager, do your own settings, then export using:
 # nix run github:nix-community/plasma-manager
