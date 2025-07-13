@@ -330,7 +330,7 @@ p7zip
    openvpn
    networkmanager-openvpn
   #sing-box
-  #hiddify-app
+  hiddify-app
   #libreswan
   #warp-plus
   proxychains
@@ -338,6 +338,7 @@ p7zip
   #sing-geoip
   #protonvpn-cli
   #v2rayn
+  v2raya
 
 ####
 #### web stuff
@@ -398,6 +399,9 @@ android-studio
 #fvm
 flutter
 
+#for save nixify project
+nix-direnv
+direnv
 #######################
 # nur repo:
 # https://nur.nix-community.org/
@@ -541,11 +545,11 @@ fonts.packages = with pkgs; [
 ## "binder_linux.devices=binder,hwbinder,vndbinder"];
 
 #  boot.kernelModules = [
-#    "binder_linux"
-#    "ashmem_linux"
-#    "memfd"
+ #   "binder_linux"
+ #   "ashmem_linux"
+ #   "memfd"
  #     "tun"
-#  ];
+  #];
 #  boot.extraModulePackages = with config.boot.kernelPackages; [
     # Add any extra module packages here
 #  ];
@@ -591,9 +595,16 @@ fonts.packages = with pkgs; [
    enable = true;
   };
 
+  programs.nekoray = {
+    enable = true;
+    tunMode.enable = true;
+  };
+  services.resolved.enable = true;
+
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.wifi.macAddress = "random";
+  #networking.networkmanager.wifi.macAddress = "random";
   networking.networkmanager.wifi.powersave = false;
   # networking.firewall.allowedUDPPorts = [ 16000 ];
 
