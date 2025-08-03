@@ -182,9 +182,9 @@ inputs, ... }:
 #  ];
 
    #enable flatpak service
-#   services.flatpak.enable = true;
-#   xdg.portal.enable = true;
-#  services.flatpak.uninstallUnmanaged = true;
+   services.flatpak.enable = true;
+   xdg.portal.enable = true;
+  services.flatpak.uninstallUnmanaged = true;
 #  services.flatpak.update.onActivation = true;
 #  services.flatpak.update.auto = {
 #     enable = true;
@@ -239,6 +239,7 @@ desktop-file-utils
 kdePackages.okular
 kdePackages.konsole
 qalculate-qt
+kdePackages.dolphin
 
 # sddm
 sddm-sugar-dark #sddm theme
@@ -270,6 +271,7 @@ mcontrolcenter
 #shorter-pixel-dungeon
 #tower-pixel-dungeon
 #rkpd2
+
 
 ####
 #### media
@@ -330,15 +332,15 @@ p7zip
    openvpn
    networkmanager-openvpn
   #sing-box
-  hiddify-app
+  #hiddify-app
   #libreswan
   #warp-plus
   proxychains
   wg-netmanager
   #sing-geoip
   #protonvpn-cli
-  #v2rayn
-  v2raya
+  v2rayn
+  #v2raya
 
 ####
 #### web stuff
@@ -881,7 +883,7 @@ programs.command-not-found.enable = false;
    plasma-browser-integration
    konsole
    elisa
-   dolphin
+  # dolphin
    khelpcenter
    kinfocenter
    discover
