@@ -46,6 +46,19 @@ inputs, ... }:
   # nix channel
   nix.channel.enable = false;
 
+  #swapFile for emergency position
+  swapDevices = [
+  {
+    device = "/swapfile";
+    size = 16 * 1024;
+  }
+ ];
+ #use swap when ram is full
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+  };
+  #####
+
 ## gaming:
 # steam options:
   hardware.steam-hardware.enable = true;
@@ -200,6 +213,7 @@ inputs, ... }:
 #    "io.github.kukuruzka165.materialgram"
 #    "org.yuzu_emu.yuzu"
 #    "com.github.tchx84.Flatseal"
+ #   { appId = "net.xmind.XMind"; origin = "flathub";  }
 #    ];
 
 #  services.flatpak.overrides = {
@@ -380,6 +394,11 @@ exfatprogs
 
 #### appimage stuff
 #gearlever
+
+###virtual machine
+  qemu_full
+#  OVMF
+#  SDL2
 
 #### idk
 fortune
