@@ -242,7 +242,7 @@ inputs, ... }:
 # official repo search:
 # https://search.nixos.org/ 
 htop
-neohtop
+
 
 wget # i search for it
 
