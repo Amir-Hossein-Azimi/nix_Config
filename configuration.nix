@@ -396,7 +396,7 @@ exfatprogs
 #gearlever
 
 ###virtual machine
-  qemu_full
+  (pkgs.qemu_full.override { cephSupport = false; enableDocs = false; })
 #  OVMF
 #  SDL2
 
