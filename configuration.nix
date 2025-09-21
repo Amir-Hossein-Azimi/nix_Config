@@ -35,13 +35,13 @@ inputs, ... }:
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  # nix gc
-  nix.gc.automatic = true;
-  nix.gc.dates = "daily";
-  nix.gc.options = "--delete-older-than 7d";
-  nix.gc.persistent = true;
-  nix.optimise.automatic = true;
-  nix.settings.auto-optimise-store = true;
+#   # nix gc
+#   nix.gc.automatic = true;
+#   nix.gc.dates = "daily";
+#   nix.gc.options = "--delete-older-than 7d";
+#   nix.gc.persistent = true;
+#   nix.optimise.automatic = true;
+#   nix.settings.auto-optimise-store = true;
 
   # nix channel
   nix.channel.enable = false;
@@ -353,8 +353,6 @@ p7zip
   wg-netmanager
   #sing-geoip
   #protonvpn-cli
-  v2rayn
-  #v2raya
 
 ####
 #### web stuff
@@ -365,13 +363,13 @@ aria
 #proton-pass
 #ungoogled-chromium
 google-chrome
-mumble
+#mumble
 ayugram-desktop
 #rclone
 speedtest-go
 git
 curl
-flatpak
+#flatpak
 sshpass
 #cloudflared
 ntfs3g
@@ -397,6 +395,7 @@ exfatprogs
 
 ###virtual machine
   (pkgs.qemu_full.override { cephSupport = false; enableDocs = false; })
+   samba
 #  OVMF
 #  SDL2
 
@@ -622,6 +621,18 @@ fonts.packages = with pkgs; [
   };
   services.resolved.enable = true;
 
+  services.samba = {
+  enable = true;
+  shares = {
+    WindowsShare = {
+      path = "/home/amir/Windows/WindowsShare";
+      browseable = "yes";
+      "read only" = "no";
+      "valid users" = "amir";
+    };
+  };
+};
+
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -792,7 +803,7 @@ fonts.packages = with pkgs; [
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+   networking.firewall.allowedTCPPorts = [ 139 445 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
