@@ -27,7 +27,7 @@
     
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.inputs.home-manager.follows = "home-manager";
+    
     # Define the Nix Flatpak repository
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     

@@ -623,7 +623,7 @@ fonts.packages = with pkgs; [
 
   services.samba = {
   enable = true;
-  shares = {
+  settings = {
     WindowsShare = {
       path = "/home/amir/Windows/WindowsShare";
       browseable = "yes";
@@ -1130,7 +1130,7 @@ environment.sessionVariables = {
 # https://home-manager-options.extranix.com/
   home-manager.useGlobalPkgs = true;
   home-manager.backupFileExtension = "";
-  home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+  home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
   
   home-manager.users.amir = {
    programs.git = {
