@@ -1137,6 +1137,10 @@ environment.sessionVariables = {
     enable = true;
     userName  = "Amir-Hossein-Azimi";
     userEmail = "tweaterinestageram20@gmail.com";
+    package = pkgs.gitFull;
+    extraConfig = {
+      credential.helper = "libsecret";
+    };
    };
 
   #  home.sessionVariables = {
