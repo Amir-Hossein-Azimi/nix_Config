@@ -376,6 +376,7 @@ ntfs3g
 usbutils
 gparted
 exfatprogs
+ticktick
 ####
 #### programing
   #python3
@@ -439,6 +440,7 @@ direnv
 ################################################
 #pkgs-stable.libreoffice
 libreoffice
+onlyoffice-bin
 ];
 
 
