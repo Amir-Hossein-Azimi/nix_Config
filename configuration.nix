@@ -357,7 +357,8 @@ p7zip
 ####
 #### web stuff
 #wget
-motrix
+#motrix
+persepolis
 httping
 aria2
 #proton-pass
