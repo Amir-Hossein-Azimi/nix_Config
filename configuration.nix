@@ -839,7 +839,7 @@ fonts.packages = with pkgs; [
   };
 
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 ################################################
 ################################################
@@ -3149,7 +3149,7 @@ vencord.settings = {
 };
 };
 
-home.stateVersion = "25.05";
+home.stateVersion = "25.11";
 
 };
 }
