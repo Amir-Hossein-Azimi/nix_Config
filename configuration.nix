@@ -310,7 +310,7 @@ p7zip
 ## android tools
   android-tools
   libarchive
-  android-udev-rules
+
   scrcpy
 
 ## wifi stuff
@@ -342,7 +342,7 @@ p7zip
 ########
 #### vpn stuff
    #pptp
-   nekoray
+   throne
    openvpn
    networkmanager-openvpn
   #sing-box
@@ -359,7 +359,7 @@ p7zip
 #wget
 motrix
 httping
-aria
+aria2
 #proton-pass
 #ungoogled-chromium
 google-chrome
@@ -440,7 +440,7 @@ direnv
 ################################################
 #pkgs-stable.libreoffice
 libreoffice
-onlyoffice-bin
+onlyoffice-desktopeditors
 ];
 
 
@@ -528,7 +528,7 @@ fonts.packages = with pkgs; [
 #  material-icons     # Google's Material Design icons
 #  material-design-icons
   noto-fonts-cjk-sans
-  noto-fonts-emoji
+  noto-fonts-color-emoji
 #  powerline-fonts
 #  powerline-symbols
 #  liberation_ttf
@@ -617,7 +617,7 @@ fonts.packages = with pkgs; [
    enable = true;
   };
 
-  programs.nekoray = {
+  programs.throne = {
     enable = true;
     tunMode.enable = true;
   };
@@ -1135,12 +1135,12 @@ environment.sessionVariables = {
   home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
   
   home-manager.users.amir = {
-   programs.git = {
+   programs.git.settings = {
     enable = true;
-    userName  = "Amir-Hossein-Azimi";
-    userEmail = "tweaterinestageram20@gmail.com";
+    user.name  = "Amir-Hossein-Azimi";
+    user.email = "tweaterinestageram20@gmail.com";
     package = pkgs.gitFull;
-    extraConfig = {
+    settings = {
       credential.helper = "libsecret";
     };
    };
