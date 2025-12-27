@@ -567,15 +567,17 @@ fonts.packages = with pkgs; [
 ## "nvidia-drm.fbdev=1"
 ## "binder_linux.devices=binder,hwbinder,vndbinder"];
 
-#  boot.kernelModules = [
+  boot.kernelModules = [
  #   "binder_linux"
  #   "ashmem_linux"
  #   "memfd"
  #     "tun"
-  #];
-#  boot.extraModulePackages = with config.boot.kernelPackages; [
+     "msi-ec"
+  ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
     # Add any extra module packages here
-#  ];
+    msi-ec
+  ];
 
  boot.initrd.kernelModules = [ "nvidia" ];
  services.xserver.videoDrivers = ["nvidia"];
