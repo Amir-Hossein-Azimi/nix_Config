@@ -293,12 +293,13 @@ mcontrolcenter
 #libreoffice
 ani-cli
 #stremio
-mpv-shim-default-shaders
+#mpv-shim-default-shaders
 #smplayer - didn't worked in wayland
 #qmplay2 - needs to compile, weird.
+haruna
 upscayl
 imagemagickBig
-mpv
+#mpv
 ffmpeg-full
 kdePackages.gwenview
 
@@ -442,6 +443,7 @@ direnv
 #pkgs-stable.libreoffice
 libreoffice
 onlyoffice-desktopeditors
+furmark
 ];
 
 
