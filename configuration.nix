@@ -297,6 +297,7 @@ ani-cli
 #smplayer - didn't worked in wayland
 #qmplay2 - needs to compile, weird.
 haruna
+handbrake
 upscayl
 imagemagickBig
 #mpv
