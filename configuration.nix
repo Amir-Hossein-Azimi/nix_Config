@@ -254,6 +254,7 @@ kdePackages.okular
 kdePackages.konsole
 qalculate-qt
 kdePackages.dolphin
+kdiff3
 
 # sddm
 sddm-sugar-dark #sddm theme
