@@ -361,13 +361,15 @@ p7zip
 ####
 #### web stuff
 #wget
-#motrix
-persepolis
+motrix
+#persepolis
 httping
 aria2
 #proton-pass
-#ungoogled-chromium
+ungoogled-chromium
+chromedriver
 google-chrome
+firefox
 #mumble
 ayugram-desktop
 #rclone
@@ -1004,7 +1006,7 @@ services.xserver.xkb = {
     EXTRA_CCFLAGS = "-I/usr/include";
     DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY= "false";
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1";
-#    browser_executable_path = "/run/current-system/sw/bin/chromium";
+    browser_executable_path = "/run/current-system/sw/bin/chromium";
     NIXPKGS_ALLOW_UNFREE = "1";
   };
 
