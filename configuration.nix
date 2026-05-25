@@ -32,7 +32,7 @@ inputs, ... }:
 #####################################################
 #####################################################
 # program and services
-
+# ── Programs ────────────────────────────────────
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 #   # nix gc
@@ -42,6 +42,17 @@ inputs, ... }:
 #   nix.gc.persistent = true;
 #   nix.optimise.automatic = true;
 #   nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    substituters = [
+      "https://cache.nixos.org"
+      "https://mirrors.bfsu.edu.cn/nix-channels/store"
+    ];
+
+   trusted-substituters = [
+     "https://cache.nixos.org"
+     "https://mirrors.bfsu.edu.cn/nix-channels/store"
+   ];
+};
 
   # nix channel
   nix.channel.enable = false;
@@ -177,22 +188,27 @@ inputs, ... }:
 #};
 
 ## programs:
-  # enable binaries
-  programs.nix-ld.enable = true;
 #  services.envfs.enable = true;
 
-  # enable appimage
-#  programs.appimage = {
-#  enable = true;
-#  binfmt = true;
-#};
 
+
+
+  # enable binaries
+  programs.nix-ld.enable = true;
   # dependency for binaries
-#  programs.nix-ld.libraries = with pkgs; [
-    # Add any missing dynamic libraries for unpackaged programs
-    # here, NOT in environment.systemPackages
+  programs.nix-ld.libraries = with pkgs; [
+  # Add any missing dynamic libraries for unpackaged programs
+  # here, NOT in environment.systemPackages
+  ];
 
-#  ];
+  # enable appimage
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
+
+
 
    #enable flatpak service
    services.flatpak.enable = true;
@@ -242,7 +258,6 @@ inputs, ... }:
 # official repo search:
 # https://search.nixos.org/ 
 htop
-
 
 wget # i search for it
 
@@ -384,6 +399,7 @@ usbutils
 gparted
 exfatprogs
 ticktick
+obs-studio
 ####
 #### programing
   #python3
@@ -623,6 +639,17 @@ fonts.packages = with pkgs; [
      # autoStart = false;
     #};
   #};
+
+   # Configure network proxy if necessary
+ #networking.proxy.default = "socks5h://127.0.0.1:9050";
+ #networking.proxy.noProxy = "127.0.0.1,localhost";
+
+  #systemd.services.nix-daemon.environment = {
+    #ALL_PROXY = "socks5h://127.0.0.1:9050";
+    #http_proxy = "socks5h://127.0.0.1:9050";
+    #https_proxy = "socks5h://127.0.0.1:9050";
+  #};
+
   networking.networkmanager = {
    enable = true;
   };
@@ -652,12 +679,6 @@ fonts.packages = with pkgs; [
   networking.networkmanager.wifi.powersave = false;
   # networking.firewall.allowedUDPPorts = [ 16000 ];
 
-  # Configure network proxy if necessary
-  #networking.proxy.default = "127.0.0.1:2080";
-  #networking.proxy.noProxy = "localhost, 127.0.0.0/8, ::1";
-
-
-
   networking.nameservers = [
   #"1.1.1.1"
 #  "1.0.0.1"
@@ -671,132 +692,12 @@ fonts.packages = with pkgs; [
 #  services.tor.enable = true;
 #  services.tor.client.enable = true;
 
+#   environment.etc."hosts".text = lib.mkForce ''
+#     185.206.229.109 chatgpt.com
+#   '';
   # proxychains:
-  programs.proxychains.enable = true;
-  environment.etc."proxychains.conf".text = "
-   # proxychains.conf  VER 4
-   #
-   #        HTTP, SOCKS4, SOCKS5 tunneling proxifier with DNS.
-   #
+ # programs.proxychains.enable = true;
 
-   # The option below identifies how the ProxyList is treated.
-   # only one option should be uncommented at time,
-   # otherwise the last appearing option will be accepted
-   #
-   #dynamic_chain
-   #
-   # Dynamic - Each connection will be done via chained proxies
-   # all proxies chained in the order as they appear in the list
-   # at least one proxy must be online to play in chain
-   # (dead proxies are skipped)
-   # otherwise EINTR is returned to the app
-   #
-   strict_chain
-   #
-   # Strict - Each connection will be done via chained proxies
-   # all proxies chained in the order as they appear in the list
-   # all proxies must be online to play in chain
-   # otherwise EINTR is returned to the app
-   #
-   #random_chain
-   #
-   # Random - Each connection will be done via random proxy
-   # (or proxy chain, see  chain_len) from the list.
-   # this option is good to test your IDS :)
-
-   # Make sense only if random_chain
-   #chain_len = 2
-
-   # Quiet mode (no output from library)
-   #quiet_mode
-
-   # Proxy DNS requests - no leak for DNS data
-   proxy_dns
-
-   # set the class A subnet number to usefor use of the internal remote DNS mapping
-   # we use the reserved 224.x.x.x range by default,
-   # if the proxified app does a DNS request, we will return an IP from that  range.
-   # on further accesses to this ip we will send the saved DNS name to the proxy.
-   # in case some control-freak app checks the returned ip, and denies to
-   # connect, you can use another subnet, e.g. 10.x.x.x or 127.x.x.x.
-   # of course you should make sure that the proxified app does not need
-   # *real* access to this subnet.
-   # i.e. dont use the same subnet then in the localnet section
-   #remote_dns_subnet 127
-   #remote_dns_subnet 10
-   remote_dns_subnet 224
-
-   # Some timeouts in milliseconds
-   tcp_read_time_out 15000
-   tcp_connect_time_out 8000
-
-   # By default enable localnet for loopback address ranges
-   # RFC5735 Loopback address range
-   localnet 127.0.0.0/255.0.0.0
-   # RFC1918 Private Address Ranges
-   # localnet 10.0.0.0/255.0.0.0
-   # localnet 172.16.0.0/255.240.0.0
-   # localnet 192.168.0.0/255.255.0.0
-
-
-   # Example for localnet exclusion
-   ## Exclude connections to 192.168.1.0/24 with port 80
-   # localnet 192.168.1.0:80/255.255.255.0
-
-   ## Exclude connections to 192.168.100.0/24
-   # localnet 192.168.100.0/255.255.255.0
-
-   ## Exclude connections to ANYwhere with port 80
-   # localnet 0.0.0.0:80/0.0.0.0
-
-
-   ### Examples for dnat
-   ## Trying to proxy connections to destinations which are dnatted,
-   ## will result in proxying connections to the new given destinations.
-   ## Whenever I connect to 1.1.1.1 on port 1234 actually connect to 1.1.1.2 on port 443
-   # dnat 1.1.1.1:1234  1.1.1.2:443
-
-   ## Whenever I connect to 1.1.1.1 on port 443 actually connect to 1.1.1.2 on port 443
-   ## (no need to write :443 again)
-   # dnat 1.1.1.2:443  1.1.1.2
-
-   ## No matter what port I connect to on 1.1.1.1 port actually connect to 1.1.1.2 on port 443
-   # dnat 1.1.1.1  1.1.1.2:443
-
-   ## Always, instead of connecting to 1.1.1.1, connect to 1.1.1.2
-   # dnat 1.1.1.1  1.1.1.2
-
-
-   # ProxyList format
-   #       type  host  port [user pass]
-   #       (values separated by 'tab' or 'blank')
-   #
-   #
-   #        Examples:
-   #
-   #        socks5	192.168.67.78	1080	lamer	secret
-   #		http	192.168.89.3	8080	justu	hidden
-   #	 	socks4	192.168.1.49	1080
-   #	    http	192.168.39.93	8080
-   #
-   #
-   #       proxy types: http, socks4, socks5, raw
-   #        * raw: The traffic is simply forwarded to the proxy without modification.
-
-   #
-   [ProxyList]
-   # add proxy here ...
-   # meanwhile
-   socks4 	127.0.0.1 10808
-
-  ";
-  programs.proxychains.proxies = {
-  myproxy ={
-    type = "socks4";
-    host = "127.0.0.1";
-    port = 10808;
-  };
-};
 
   # add crt manually
 #  security.pki.certificateFiles =["${pkgs.cacert}/home/amir/Public/mitmproxy-ca-cert.crt"];
@@ -831,8 +732,8 @@ fonts.packages = with pkgs; [
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    #alsa.enable = true;
-    #alsa.support32Bit = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
@@ -1155,6 +1056,7 @@ environment.sessionVariables = {
     };
    };
 
+   #solve v2ray problem
    xdg.dataFile = {
      "v2rayN/bin/sing_box/sing-box".source = "${pkgs.sing-box}/bin/sing-box";
      "v2rayN/bin/xray/xray".source = "${pkgs.xray}/bin/xray";

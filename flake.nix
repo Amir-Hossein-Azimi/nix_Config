@@ -77,14 +77,14 @@ programsdb.inputs.nixpkgs.follows = "nixpkgs";
     # Additional cache servers for fetching packages
     extra-substituters = [
       "https://nix-community.cachix.org"
-#      "https://cache.garnix.io"
+      #"https://cache.garnix.io"
       "https://nixpkgs-wayland.cachix.org"
     ];
     
     # Trust keys for the specified cache servers
     extra-trusted-public-keys = [
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-#      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      #"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
