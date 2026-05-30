@@ -42,17 +42,17 @@ inputs, ... }:
 #   nix.gc.persistent = true;
 #   nix.optimise.automatic = true;
 #   nix.settings.auto-optimise-store = true;
-  nix.settings = {
-    substituters = [
-      "https://cache.nixos.org"
-      "https://mirrors.bfsu.edu.cn/nix-channels/store"
-    ];
+  #nix.settings = {
+    #substituters = [
+      #"https://cache.nixos.org"
+      #"https://mirrors.bfsu.edu.cn/nix-channels/store"
+    #];
 
-   trusted-substituters = [
-     "https://cache.nixos.org"
-     "https://mirrors.bfsu.edu.cn/nix-channels/store"
-   ];
-};
+   #trusted-substituters = [
+    # "https://cache.nixos.org"
+    # "https://mirrors.bfsu.edu.cn/nix-channels/store"
+  # ];
+#};
 
   # nix channel
   nix.channel.enable = false;
@@ -1064,10 +1064,6 @@ environment.sessionVariables = {
      "v2rayN/bin/geosite.dat".source = "${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat";
    };
 
-  #  home.sessionVariables = {
-  #  ANDROID_SDK_ROOT = "/home/amir/FROMOLDPC/Project/AndroidStudioSdk/sdk";
-  #  HELLO_NIXOS = "It works!";
-  #};
  #kde
 # if you want to change stuff, disable plasma manager, do your own settings, then export using:
 # nix run github:nix-community/plasma-manager

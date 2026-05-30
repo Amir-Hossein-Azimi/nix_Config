@@ -72,22 +72,22 @@ programsdb.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Nix configuration settings
-  nixConfig = {
+ # nixConfig = {
     # retry-count = 10;
     # Additional cache servers for fetching packages
-    extra-substituters = [
-      "https://nix-community.cachix.org"
+    #extra-substituters = [
+      #"https://nix-community.cachix.org"
       #"https://cache.garnix.io"
-      "https://nixpkgs-wayland.cachix.org"
-    ];
+      #"https://nixpkgs-wayland.cachix.org"
+    #];
     
     # Trust keys for the specified cache servers
-    extra-trusted-public-keys = [
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+   # extra-trusted-public-keys = [
+    #  "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       #"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-  };
+    #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+   # ];
+ # };
 
   outputs = { 
     self, 
