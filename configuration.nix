@@ -78,10 +78,10 @@ inputs, ... }:
     package = pkgs.steam.override {
     extraPkgs = pkgs: with pkgs; [
       gamescope
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
+        libXcursor
+        libXi
+        libXinerama
+        libXScrnSaver
         libpng
         libpulseaudio
         libvorbis
@@ -293,7 +293,7 @@ prismlauncher
 protonup-qt
 dxvk
 winetricks
-wineWowPackages.unstableFull
+wineWow64Packages.unstableFull
 gamescope
 mcontrolcenter
 #lutris
@@ -595,8 +595,10 @@ fonts.packages = with pkgs; [
  #   "ashmem_linux"
  #   "memfd"
  #     "tun"
+     "ec_sys"
      "msi-ec"
   ];
+  boot.extraModprobeConfig = ''options ec_sys write=1'';
   boot.extraModulePackages = with config.boot.kernelPackages; [
     # Add any extra module packages here
     msi-ec
@@ -750,7 +752,7 @@ fonts.packages = with pkgs; [
   };
 
 
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 
 ################################################
 ################################################
@@ -1478,6 +1480,11 @@ gtk = {
       iconTheme.package = pkgs.candy-icons;
       gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+      # This silences the GTK4 theme warning
+      gtk4.theme = {
+        name = "Sweet-Dark";
+        package = pkgs.sweet;
+      };
 };
 
 stylix.targets.qt.enable = false;
@@ -1881,7 +1888,7 @@ inhibit-gnome
       #"application/pdf" = "okularApplication_comicbook.desktop";
     }; };
 
-home.stateVersion = "25.11";
+home.stateVersion = "26.05";
 
 };
 }
