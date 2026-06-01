@@ -56,6 +56,9 @@ inputs, ... }:
  #use swap when ram is full
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
+    # Reduce latency and improve stability fq&bbr
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
   };
   #####
 
@@ -250,218 +253,242 @@ inputs, ... }:
 # system packages
 # List packages installed in system profile. To search, run:
 # $ nix search package
-  environment.systemPackages = with pkgs; [
-# official repo search:
-# https://search.nixos.org/ 
-htop
+environment.systemPackages = with pkgs; [
+    ################################################
+    # Official Repo Search & Info
+    ################################################
+    # https://search.nixos.org/
 
-wget # i search for it
+    ################################################
+    # System Utilities & CLI Tools
+    ################################################
+    htop
+    btop
+    tree
+    wget # i search for it
+    curl
+    fastfetch
+    libarchive
+    ntfs3g
+    usbutils
+    gparted
+    exfatprogs
 
-# gnome
-dconf-editor
-desktop-file-utils
-#kde
-kdePackages.okular
-kdePackages.konsole
-qalculate-qt
-kdePackages.dolphin
-kdiff3
+    # Compression
+    unrar-wrapper
+    p7zip
 
-# sddm
-sddm-sugar-dark #sddm theme
-libsForQt5.qt5.qtgraphicaleffects 
-libsForQt5.qt5.qtquickcontrols2
+    # Fun / IDK
+    fortune
+    pokemonsay
+    lolcat
+    #ventoy-full
+    #ventoy-full-qt
 
-#### cheatsheet, use ai instead
-#cht-sh
-#tldr
+    ################################################
+    # Desktop Environment & Display Manager
+    ################################################
+    # Gnome
+    dconf-editor
+    desktop-file-utils
 
-#### gaming
-steam-run
-heroic
-#suyu
-#torzu
-steamtinkerlaunch
-love
-#ryujinx-greemdev
-protontricks
-prismlauncher
-protonup-qt
-dxvk
-winetricks
-wineWow64Packages.unstableFull
-gamescope
-mcontrolcenter
-#lutris
-#shattered-pixel-dungeon
-#shorter-pixel-dungeon
-#tower-pixel-dungeon
-#rkpd2
+    # KDE
+    kdePackages.okular
+    kdePackages.konsole
+    kdePackages.dolphin
+    kdePackages.kate
+    kdePackages.gwenview
+    qalculate-qt
+    kdiff3
+    nemo-with-extensions
 
+    # SDDM
+    sddm-sugar-dark #sddm theme
+    libsForQt5.qt5.qtgraphicaleffects
+    libsForQt5.qt5.qtquickcontrols2
 
-####
-#### media
-#suwayomi-server
-#libreoffice
-ani-cli
-#stremio
-#mpv-shim-default-shaders
-#smplayer - didn't worked in wayland
-#qmplay2 - needs to compile, weird.
-haruna
-handbrake
-upscayl
-imagemagickBig
-#mpv
-ffmpeg-full
-kdePackages.gwenview
+    ################################################
+    # Internet, Web & Communication
+    ################################################
+    firefox
+    google-chrome
+    ungoogled-chromium
+    chromedriver
+    ayugram-desktop
+    ticktick
+    #mumble
+    #proton-pass
 
-# compression
-unrar-wrapper
-p7zip
+    # Download Managers
+    motrix
+    aria2
+    #persepolis
 
-####
-## android tools
-  android-tools
-  libarchive
+    # Network Tools
+    httping
+    speedtest-go
+    #rclone
+    #flatpak
+    #cloudflared
 
-  scrcpy
+    ################################################
+    # Media, Graphics & Office
+    ################################################
+    ani-cli
+    haruna
+    handbrake
+    upscayl
+    imagemagickBig
+    ffmpeg-full
+    obs-studio
+    #suwayomi-server
+    #stremio
+    #mpv-shim-default-shaders
+    #smplayer - didn't worked in wayland
+    #qmplay2 - needs to compile, weird.
+    #mpv
 
-## wifi stuff
-#  cowpatty
-#  aircrack-ng
-#  wirelesstools
-#  bettercap
-#  hashcat
-#  airgeddon
-#  wifite2
-#  wpa_supplicant
-#  pixiewps
-#  iw
-#  pciutils
-#  crunch
-#  mdk4
-#  hostapd
-#  lighttpd
-#  hcxdumptool
-#  ettercap
-#  wireshark
-#  dnsmasq
-#  reaverwps
-#  tcpdump
-#  bully
-#  asleap
-#  john
-#  hcxtools
-########
-#### vpn stuff
-   #pptp
-   throne
-   v2rayn
-   openvpn
-   networkmanager-openvpn
-  #sing-box
-  #hiddify-app
-  #libreswan
-  #warp-plus
-  proxychains
-  wg-netmanager
-  #sing-geoip
-  #protonvpn-cli
+    # Office (Stable repo separation note kept)
+    libreoffice
+    onlyoffice-desktopeditors
+    #libreoffice
 
-####
-#### web stuff
-#wget
-motrix
-#persepolis
-httping
-aria2
-#proton-pass
-ungoogled-chromium
-chromedriver
-google-chrome
-firefox
-#mumble
-ayugram-desktop
-#rclone
-speedtest-go
-git
-curl
-#flatpak
-sshpass
-#cloudflared
-ntfs3g
-usbutils
-gparted
-exfatprogs
-ticktick
-obs-studio
-####
-#### programing
-  #python3
+    ################################################
+    # Gaming
+    ################################################
+    steam-run
+    heroic
+    steamtinkerlaunch
+    love
+    protontricks
+    prismlauncher
+    protonup-qt
+    dxvk
+    winetricks
+    wineWow64Packages.unstableFull
+    gamescope
+    mcontrolcenter
+    furmark
+    #suyu
+    #torzu
+    #ryujinx-greemdev
+    #lutris
+    #shattered-pixel-dungeon
+    #shorter-pixel-dungeon
+    #tower-pixel-dungeon
+    #rkpd2
 
-   #.....
+    ################################################
+    # VPN, Proxy & Network Security
+    ################################################
+    v2rayn
+    throne
+    openvpn
+    networkmanager-openvpn
+    proxychains
+    wg-netmanager
+    #pptp
+    #sing-box
+    #hiddify-app
+    #libreswan
+    #warp-plus
+    #sing-geoip
+    #protonvpn-cli
 
-  conda
-  #bun
-  #gcc
-  #git-lfs
-  nodejs
-  #deno
-  #aider-chat-full
+    # Wi-Fi Tools
+    # cowpatty
+    # aircrack-ng
+    # wirelesstools
+    # bettercap
+    # hashcat
+    # airgeddon
+    # wifite2
+    # wpa_supplicant
+    # pixiewps
+    # iw
+    # pciutils
+    # crunch
+    # mdk4
+    # hostapd
+    # lighttpd
+    # hcxdumptool
+    # ettercap
+    # wireshark
+    # dnsmasq
+    # reaverwps
+    # tcpdump
+    # bully
+    # asleap
+    # john
+    # hcxtools
 
-#### appimage stuff
-#gearlever
+    ################################################
+    # Development & Programming
+    ################################################
+    git
+    sshpass
+    conda
+    nodejs
+    nvtopPackages.full
+    #python3
+    #bun
+    #gcc
+    #git-lfs
+    #deno
+    #aider-chat-full
 
-###virtual machine
-  (pkgs.qemu_full.override { cephSupport = false; enableDocs = false; })
-   samba
-#  OVMF
-#  SDL2
+    # Cheatsheets (use AI instead)
+    #cht-sh
+    #tldr
 
-#### idk
-fortune
-pokemonsay
-lolcat
-tree
-btop 
-nvtopPackages.full
-kdePackages.kate
-#ventoy-full
-#ventoy-full-qt
-fastfetch
-nemo-with-extensions
-obsidian
+    # For save nixify project
+    direnv
+    nix-direnv
 
-#android developer
-vscode-fhs
-android-studio
-#fvm
-flutter
+    ################################################
+    # Android Development & Tools
+    ################################################
+    android-tools
+    scrcpy
+    android-studio
+    vscode-fhs
+    flutter
+    #fvm
 
-#for save nixify project
-nix-direnv
-direnv
-#######################
-# nur repo:
-# https://nur.nix-community.org/
-#######################
-#nur.repos.novel2430.zen-browser-bin
+    ################################################
+    # Virtualization & Containers
+    ################################################
+    (pkgs.qemu_full.override { cephSupport = false; enableDocs = false; })
+    samba
+    # OVMF
+    # SDL2
 
-########################
-# flake stuff
-########################
-#inputs.elyprism.packages.${system}.default
+    ################################################
+    # AppImage Tools
+    ################################################
+    #gearlever
 
+    ################################################
+    # Productivity & Notes
+    ################################################
+    obsidian
 
-################################################
-# stable repo separation because i said so
-################################################
-#pkgs-stable.libreoffice
-libreoffice
-onlyoffice-desktopeditors
-furmark
-];
+    ################################################
+    # NUR Repo Notes
+    # https://nur.nix-community.org/
+    ################################################
+    #nur.repos.novel2430.zen-browser-bin
+
+    ################################################
+    # Flake Stuff Notes
+    ################################################
+    #inputs.elyprism.packages.${system}.default
+
+    ################################################
+    # Stable Repo Separation Because I Said So
+    ################################################
+    #pkgs-stable.libreoffice
+  ];
 
 
 #####################################################
@@ -593,6 +620,7 @@ fonts.packages = with pkgs; [
  #     "tun"
      "ec_sys"
      "msi-ec"
+     "tcp_bbr" # Load BBR for better network throughput
   ];
   boot.extraModprobeConfig = ''options ec_sys write=1'';
   boot.extraModulePackages = with config.boot.kernelPackages; [
