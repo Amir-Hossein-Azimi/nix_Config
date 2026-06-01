@@ -42,17 +42,6 @@ inputs, ... }:
 #   nix.gc.persistent = true;
 #   nix.optimise.automatic = true;
 #   nix.settings.auto-optimise-store = true;
-  #nix.settings = {
-    #substituters = [
-      #"https://cache.nixos.org"
-      #"https://mirrors.bfsu.edu.cn/nix-channels/store"
-    #];
-
-   #trusted-substituters = [
-    # "https://cache.nixos.org"
-    # "https://mirrors.bfsu.edu.cn/nix-channels/store"
-  # ];
-#};
 
   # nix channel
   nix.channel.enable = false;
@@ -188,17 +177,24 @@ inputs, ... }:
 #};
 
 ## programs:
-#  services.envfs.enable = true;
-
-
-
+  services.envfs.enable = true;
 
   # enable binaries
   programs.nix-ld.enable = true;
+
   # dependency for binaries
   programs.nix-ld.libraries = with pkgs; [
   # Add any missing dynamic libraries for unpackaged programs
   # here, NOT in environment.systemPackages
+   stdenv.cc.cc.lib
+   zlib
+   alsa-lib
+   glib
+   openssl
+   libX11
+   libXext
+   libXrender
+   libXi
   ];
 
   # enable appimage
@@ -211,9 +207,9 @@ inputs, ... }:
 
 
    #enable flatpak service
-   services.flatpak.enable = true;
+   services.flatpak.enable = false;
    xdg.portal.enable = true;
-  services.flatpak.uninstallUnmanaged = true;
+  services.flatpak.uninstallUnmanaged = false;
 #  services.flatpak.update.onActivation = true;
 #  services.flatpak.update.auto = {
 #     enable = true;
