@@ -942,8 +942,6 @@ environment.sessionVariables = {
 #  WLR_NO_HARDWARE_CURSORS = "1";
 #  ELECTRON_OZONE_PLATFORM_HINT = "wayland";
 #  NIXOS_OZONE_WL = "1";
-    #for gemini
-    GOOGLE_CLOUD_PROJECT="amhoaz";
 };
 
 ### add aliases
