@@ -304,8 +304,8 @@ environment.systemPackages = with pkgs; [
 
     # SDDM
     sddm-sugar-dark #sddm theme
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.qt5.qtquickcontrols2
+    qt5.qtgraphicaleffects
+    qt5.qtquickcontrols2
 
     ################################################
     # Internet, Web & Communication
