@@ -298,6 +298,7 @@ environment.systemPackages = with pkgs; [
     kdePackages.dolphin
     kdePackages.kate
     kdePackages.gwenview
+    kdePackages.kamoso
     qalculate-qt
     kdiff3
     nemo-with-extensions
