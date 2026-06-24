@@ -206,9 +206,6 @@ inputs, ... }:
     binfmt = true;
   };
 
-
-
-
    #enable flatpak service
    services.flatpak.enable = false;
    xdg.portal.enable = true;
@@ -787,7 +784,7 @@ fonts.packages = with pkgs; [
   users.users.amir = {
     isNormalUser = true;
     description = "amirhossein";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "adbusers"];
     shell = pkgs.fish;
     packages = with pkgs; [
     #kate
