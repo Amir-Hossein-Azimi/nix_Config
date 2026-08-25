@@ -1511,6 +1511,7 @@ stylix.targets.gtk.enable = false;
 
 gtk = {
       enable = true;
+      gtk2.configLocation = "/home/amir/.config/gtk-2.0/gtkrc";
       theme.name = "Sweet-Dark";
       theme.package = sweet-gtk-theme;
       iconTheme.name = "candy-icons";
