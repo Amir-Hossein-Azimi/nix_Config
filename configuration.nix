@@ -7,6 +7,21 @@
 
 inputs, ... }:
 
+let
+  sweet-gtk-theme = pkgs.stdenv.mkDerivation {
+    pname = "sweet-gtk-theme";
+    version = "6.0";
+    src = pkgs.fetchzip {
+      url = "https://github.com/EliverLara/Sweet/releases/download/v6.0/Sweet-Dark.tar.xz";
+      hash = "sha256-cnf8u/cFWqmE03ebfVtFstwe5cb4185eHsGdpS6Xx8g=";
+    };
+    dontBuild = true;
+    installPhase = ''
+      mkdir -p $out/share/themes/Sweet-Dark
+      cp -a * $out/share/themes/Sweet-Dark/
+    '';
+  };
+in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -1497,7 +1512,7 @@ stylix.targets.gtk.enable = false;
 gtk = {
       enable = true;
       theme.name = "Sweet-Dark";
-      theme.package = pkgs.sweet;
+      theme.package = sweet-gtk-theme;
       iconTheme.name = "candy-icons";
       iconTheme.package = pkgs.candy-icons;
       gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
@@ -1505,7 +1520,7 @@ gtk = {
       # This silences the GTK4 theme warning
       gtk4.theme = {
         name = "Sweet-Dark";
-        package = pkgs.sweet;
+        package = sweet-gtk-theme;
       };
 };
 
