@@ -485,6 +485,7 @@ environment.systemPackages = with pkgs; [
     # Productivity & Notes
     ################################################
     obsidian
+    safeeyes
 
     ################################################
     # NUR Repo Notes
@@ -869,14 +870,13 @@ programs.command-not-found.enable = false;
    khelpcenter
    kinfocenter
    discover
-   kwalletmanager
+  #kwalletmanager
 ];
-
-
 
   # login manager
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
+  security.pam.services.sddm.enableKwallet = true;
   #uncomment for kde 6
   services.displayManager.sddm.extraPackages = [ pkgs.sddm-astronaut ];
   services.displayManager.sddm.theme = "${pkgs.sddm-astronaut}/share/sddm/themes/sddm-astronaut-theme";
@@ -1416,7 +1416,7 @@ environment.sessionVariables = {
       "kwalletrc"."Wallet"."Close When Idle" = false;
       "kwalletrc"."Wallet"."Close on Screensaver" = false;
       "kwalletrc"."Wallet"."Default Wallet" = "kdewallet";
-      "kwalletrc"."Wallet"."Enabled" = false;
+      "kwalletrc"."Wallet"."Enabled" = true;
       "kwalletrc"."Wallet"."Idle Timeout" = 10;
       "kwalletrc"."Wallet"."Launch Manager" = false;
       "kwalletrc"."Wallet"."Leave Manager Open" = false;
