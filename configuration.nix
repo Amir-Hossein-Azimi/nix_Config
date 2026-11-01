@@ -443,6 +443,7 @@ environment.systemPackages = with pkgs; [
     conda
     nodejs
     nvtopPackages.full
+    sqlitebrowser
     #python3
     #bun
     #gcc
@@ -862,15 +863,18 @@ programs.command-not-found.enable = false;
 
 
 
+  # Disable KDE PIM (removes KMail, Kontact, Merkuro, ktnef, Akonadi, etc.)
+  programs.kde-pim.enable = false;
+
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
-   plasma-browser-integration
-   konsole
-   elisa
-  # dolphin
-   khelpcenter
-   kinfocenter
-   discover
-  #kwalletmanager
+      plasma-browser-integration
+      konsole
+      elisa
+      # dolphin
+      khelpcenter
+      kinfocenter
+      discover
+      #kwalletmanager
 ];
 
   # login manager
