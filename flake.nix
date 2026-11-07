@@ -3,6 +3,9 @@
     # Define the Nixpkgs repository, using the unstable branch
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; 
 
+    # Add nix-alien here
+    nix-alien.url = "github:thiagokokada/nix-alien";
+
     # Define the stable Nixpkgs repository
     #nixpkgs-stable = {
     #  url = "github:nixos/nixpkgs/nixos-24.11"; # Or your desired stable branch, e.g., nixos-24.05 when available
