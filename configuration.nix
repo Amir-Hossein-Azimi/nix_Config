@@ -487,7 +487,6 @@ environment.systemPackages = with pkgs; [
     ################################################
     obsidian
     safeeyes
-    rustdesk-flutter
 
     ################################################
     # NUR Repo Notes
@@ -506,7 +505,7 @@ environment.systemPackages = with pkgs; [
     #pkgs-stable.libreoffice
 
     # nix-alien (provides nix-alien, nix-alien-ld, nix-alien-find-libs)
-    inputs.nix-alien.packages.${pkgs.system}.nix-alien
+    inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
   ];
 
 
